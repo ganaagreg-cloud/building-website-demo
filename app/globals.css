@@ -28,8 +28,8 @@
   --shadow-lg: 0 16px 48px rgba(42, 39, 36, 0.10);
 
   /* Max widths */
-  --width-content: 1200px;
-  --width-reading: 680px;
+  --max-width-content: 1200px;
+  --max-width-reading: 680px;
 }
 
 /* CSS custom properties for values that need to stay as CSS vars at runtime
