@@ -1,26 +1,68 @@
 @import "tailwindcss";
 
+@theme {
+  /* Palette */
+  --color-surface: #FAF6EF;
+  --color-surface-raised: #EDE4D3;
+  --color-oak: #B8946A;
+  --color-sage: #97A988;
+  --color-text: #2A2724;
+  --color-muted: #6B655C;
+  --color-on-oak: #FAF6EF;
+  --color-error: #C0574A;
+
+  /* Font families */
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Golos Text", system-ui, sans-serif;
+  --font-utility: "Space Mono", monospace;
+
+  /* Border radius */
+  --radius-none: 0px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(42, 39, 36, 0.06);
+  --shadow-md: 0 4px 16px rgba(42, 39, 36, 0.08);
+  --shadow-lg: 0 16px 48px rgba(42, 39, 36, 0.10);
+
+  /* Max widths */
+  --width-content: 1200px;
+  --width-reading: 680px;
+}
+
+/* CSS custom properties for values that need to stay as CSS vars at runtime
+   (rgba tokens can't go in @theme directly) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-border: rgba(42, 39, 36, 0.10);
+  --color-number: rgba(42, 39, 36, 0.04);
+  --section-padding: 96px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (min-width: 1024px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --section-padding: 128px;
   }
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, video, canvas {
+  display: block;
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-oak);
+  outline-offset: 2px;
 }
