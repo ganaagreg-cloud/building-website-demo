@@ -5,6 +5,7 @@
   --color-surface: #FAF6EF;
   --color-surface-raised: #EDE4D3;
   --color-oak: #B8946A;
+  --color-oak-hover: #A07E5A;
   --color-sage: #97A988;
   --color-text: #2A2724;
   --color-muted: #6B655C;
@@ -37,6 +38,7 @@
 :root {
   --color-border: rgba(42, 39, 36, 0.10);
   --color-number: rgba(42, 39, 36, 0.04);
+  --color-text-disabled: rgba(42, 39, 36, 0.40);
   --section-padding: 96px;
 }
 

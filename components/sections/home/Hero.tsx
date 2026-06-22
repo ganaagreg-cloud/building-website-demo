@@ -9,7 +9,10 @@ interface HeroProps {
 
 export function Hero({ buildingName, tagline, heroImage = '/assets/demo/hero/building.jpg' }: HeroProps) {
   return (
-    <div className="relative w-full min-h-[90svh] flex items-end pb-16 px-4 lg:px-8">
+    <section
+      aria-label="Hero"
+      className="relative w-full min-h-[90svh] flex items-end pb-16 px-4 lg:px-8"
+    >
       <Image
         src={heroImage}
         alt={`${buildingName} барилгын гадна талын зураг`}
@@ -37,11 +40,11 @@ export function Hero({ buildingName, tagline, heroImage = '/assets/demo/hero/bui
         <p className="font-body text-lg text-muted mb-8 max-w-reading">{tagline}</p>
         <Link
           href="#tour"
-          className="inline-flex items-center justify-center bg-oak text-on-oak rounded-full px-8 py-3 font-body text-sm hover:bg-[#A07E5A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oak focus-visible:ring-offset-2"
+          className="inline-flex items-center justify-center bg-oak text-on-oak rounded-full px-8 py-3 font-body text-sm hover:bg-[var(--color-oak-hover)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oak focus-visible:ring-offset-2"
         >
           Аялалд орох
         </Link>
       </div>
-    </div>
+    </section>
   )
 }

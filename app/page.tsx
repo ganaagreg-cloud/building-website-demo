@@ -13,14 +13,15 @@ export default async function HomePage() {
       <Hero buildingName={clientConfig.buildingName} tagline={clientConfig.tagline} />
 
       {/* Tour placeholder — replaced in Phase 9 */}
-      <div
+      <section
         id="tour"
+        aria-label="Орон сууцны аялал"
         className="w-full h-[60vh] bg-surface-raised flex items-center justify-center border-y border-[rgba(42,39,36,0.10)]"
       >
         <p className="font-utility text-[12px] text-muted tracking-widest uppercase">
           Cinematic scroll-scrub tour — coming soon
         </p>
-      </div>
+      </section>
 
       <ResidencesPreview unitTypes={unitTypes} />
       <AvailabilityTeaser units={units} unitTypes={unitTypes} />

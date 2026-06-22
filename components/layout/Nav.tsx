@@ -13,7 +13,7 @@ const NAV_LINKS = [
 ]
 
 const pillClass =
-  'bg-oak text-on-oak rounded-full px-5 py-2 font-body text-sm hover:bg-[#A07E5A] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oak focus-visible:ring-offset-2'
+  'bg-oak text-on-oak rounded-full px-5 py-2 font-body text-sm hover:bg-[var(--color-oak-hover)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oak focus-visible:ring-offset-2'
 
 export function Nav() {
   const pathname = usePathname()

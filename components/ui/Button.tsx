@@ -21,10 +21,10 @@ export function Button({
 
   const variants: Record<ButtonVariant, string> = {
     primary:
-      'bg-oak text-on-oak rounded-md hover:bg-[#A07E5A] active:bg-[#8D6D4C] disabled:bg-[rgba(42,39,36,0.20)] disabled:text-muted hover:shadow-sm',
+      'bg-oak text-on-oak rounded-md hover:bg-[var(--color-oak-hover)] active:bg-[#8D6D4C] disabled:bg-[rgba(42,39,36,0.20)] disabled:text-muted hover:shadow-sm',
     ghost:
       'bg-transparent text-[var(--color-text)] rounded-md border border-[rgba(42,39,36,0.20)] hover:border-[rgba(42,39,36,0.40)] active:bg-[rgba(42,39,36,0.06)] disabled:text-muted',
-    pill: 'bg-oak text-on-oak rounded-full hover:bg-[#A07E5A] active:bg-[#8D6D4C] disabled:bg-[rgba(42,39,36,0.20)] disabled:text-muted hover:shadow-sm',
+    pill: 'bg-oak text-on-oak rounded-full hover:bg-[var(--color-oak-hover)] active:bg-[#8D6D4C] disabled:bg-[rgba(42,39,36,0.20)] disabled:text-muted hover:shadow-sm',
   }
 
   return (

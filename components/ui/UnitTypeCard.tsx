@@ -14,9 +14,10 @@ export function UnitTypeCard({ unitType }: UnitTypeCardProps) {
   return (
     <Link
       href={`/residences/${unitType.id}`}
-      className="group block bg-surface-raised rounded-md overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oak focus-visible:ring-offset-2"
+      className="group block bg-surface-raised rounded-md shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oak focus-visible:ring-offset-2"
     >
-      <div className="relative aspect-video overflow-hidden rounded-none">
+      {/* rounded-t-md clips the image to the card's top corners; image itself has no rounding */}
+      <div className="relative aspect-video overflow-hidden rounded-t-md">
         <Image
           src={unitType.floorPlanImage}
           alt={`${unitType.name} орон сууцны зураг`}

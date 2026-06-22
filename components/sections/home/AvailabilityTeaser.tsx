@@ -19,13 +19,17 @@ export function AvailabilityTeaser({ units, unitTypes }: AvailabilityTeaserProps
   return (
     <SectionWrapper number="02" className="bg-surface-raised">
       <div className="max-w-content mx-auto">
-        <h2 className="font-display text-4xl lg:text-5xl mb-8">Боломжтой орон сууц</h2>
+        <h2 className="font-display font-light text-4xl lg:text-5xl mb-8">Боломжтой орон сууц</h2>
         {preview.length === 0 ? (
           <p className="font-body text-sm text-muted">Одоогоор боломжтой орон сууц байхгүй байна.</p>
         ) : (
-          <div className="divide-y divide-[rgba(42,39,36,0.10)]">
+          <div className="divide-y divide-[var(--color-border)]">
             {preview.map((unit) => (
-              <div key={unit.id} className="flex items-center justify-between py-4 gap-4">
+              <Link
+                key={unit.id}
+                href="/availability"
+                className="flex items-center justify-between py-4 gap-4 hover:bg-[rgba(42,39,36,0.03)] transition-colors -mx-2 px-2 rounded-sm"
+              >
                 <span className="font-utility text-[12px] text-muted w-14 shrink-0">
                   {unit.floor}-р давхар
                 </span>
@@ -41,13 +45,13 @@ export function AvailabilityTeaser({ units, unitTypes }: AvailabilityTeaserProps
                 <div className="shrink-0">
                   <StatusBadge status={unit.status} />
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
         <Link
           href="/availability"
-          className="mt-6 inline-block font-body text-sm text-muted hover:text-[var(--color-text)] transition-colors"
+          className="mt-6 py-2 inline-block font-body text-sm text-muted hover:text-[var(--color-text)] transition-colors"
         >
           Бүтэн жагсаалт →
         </Link>

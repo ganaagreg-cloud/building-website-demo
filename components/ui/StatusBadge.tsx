@@ -13,7 +13,7 @@ interface StatusBadgeProps {
 export function StatusBadge({ status }: StatusBadgeProps) {
   if (status === 'sold') {
     return (
-      <span className="font-utility text-[11px] text-[rgba(42,39,36,0.40)]">
+      <span className="font-utility text-[11px] text-[var(--color-text-disabled)]">
         {LABELS.sold}
       </span>
     )
