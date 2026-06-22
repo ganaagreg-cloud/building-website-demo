@@ -11,7 +11,7 @@ export default async function HomePage() {
 
   return (
     <main>
-      <Hero buildingName={clientConfig.buildingName} tagline={clientConfig.tagline} />
+      <Hero buildingName={clientConfig.buildingName} tagline={clientConfig.tagline} heroImage={clientConfig.heroImage} />
       <TourLoader frames={clientConfig.tourFrames ?? []} />
       <ResidencesPreview unitTypes={unitTypes} />
       <AvailabilityTeaser units={units} unitTypes={unitTypes} />

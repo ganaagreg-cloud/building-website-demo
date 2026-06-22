@@ -9,13 +9,15 @@ interface SectionWrapperProps {
 export function SectionWrapper({ number, className = '', children }: SectionWrapperProps) {
   return (
     <section
+      data-reveal-section
       className={`relative overflow-hidden px-4 lg:px-8 ${className}`}
-      style={{ paddingBlock: 'var(--section-padding)' }}
+      style={{ paddingBlock: 'var(--section-padding)', isolation: 'isolate' }}
     >
       {children}
       {number !== undefined && (
         <span
           aria-hidden="true"
+          data-parallax-number
           className="pointer-events-none select-none absolute font-display font-light leading-none"
           style={{
             bottom: '-0.2em',

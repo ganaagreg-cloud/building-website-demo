@@ -1,10 +1,12 @@
 import type { ClientConfig } from '@/types'
+import { PLACEHOLDER_IMAGES } from './placeholders'
 
 export const clientConfig: ClientConfig = {
   slug: 'demo',
   buildingName: 'Шинэ Улаанбаатар',
   tagline: 'Таны шинэ гэр',
   logo: '/assets/demo/logo.svg',
+  heroImage: PLACEHOLDER_IMAGES.hero,
   theme: {
     oak: '#B8946A',
     sage: '#97A988',
@@ -22,8 +24,8 @@ export const clientConfig: ClientConfig = {
       rooms: 0,
       sizeRange: [28, 35],
       priceFrom: 120_000_000,
-      floorPlanImage: '/assets/demo/types/studio/floorplan.jpg',
-      gallery: ['/assets/demo/types/studio/render-1.jpg'],
+      floorPlanImage: PLACEHOLDER_IMAGES.studio,
+      gallery: [PLACEHOLDER_IMAGES.gallery[0]!],
       features: ['Нээлттэй төлөвлөлт', 'Модон шал', 'Хойд харсан цонх'],
       blurb: 'Ганцаараа буюу хосоороо амьдрахад тохиромжтой.',
     },
@@ -33,8 +35,8 @@ export const clientConfig: ClientConfig = {
       rooms: 1,
       sizeRange: [42, 55],
       priceFrom: 180_000_000,
-      floorPlanImage: '/assets/demo/types/1br/floorplan.jpg',
-      gallery: ['/assets/demo/types/1br/render-1.jpg'],
+      floorPlanImage: PLACEHOLDER_IMAGES.oneBr,
+      gallery: [PLACEHOLDER_IMAGES.gallery[1]!],
       features: ['Тусдаа унтлагын өрөө', 'Том цонх', 'Нарны гэрэл сайтай'],
       blurb: 'Хос буюу залуу гэр бүлд зориулсан.',
     },
@@ -44,11 +46,8 @@ export const clientConfig: ClientConfig = {
       rooms: 2,
       sizeRange: [68, 85],
       priceFrom: 260_000_000,
-      floorPlanImage: '/assets/demo/types/2br/floorplan.jpg',
-      gallery: [
-        '/assets/demo/types/2br/render-1.jpg',
-        '/assets/demo/types/2br/render-2.jpg',
-      ],
+      floorPlanImage: PLACEHOLDER_IMAGES.twoBr,
+      gallery: [PLACEHOLDER_IMAGES.gallery[2]!, PLACEHOLDER_IMAGES.gallery[3]!],
       features: ['2 унтлагын өрөө', 'Уужим зочны өрөө', '2 угаалгын өрөө'],
       blurb: 'Гэр бүлд тохирсон оновчтой зохион байгуулалт.',
     },
@@ -58,11 +57,8 @@ export const clientConfig: ClientConfig = {
       rooms: 3,
       sizeRange: [95, 120],
       priceFrom: 380_000_000,
-      floorPlanImage: '/assets/demo/types/3br/floorplan.jpg',
-      gallery: [
-        '/assets/demo/types/3br/render-1.jpg',
-        '/assets/demo/types/3br/render-2.jpg',
-      ],
+      floorPlanImage: PLACEHOLDER_IMAGES.threeBr,
+      gallery: [PLACEHOLDER_IMAGES.gallery[0]!, PLACEHOLDER_IMAGES.gallery[2]!],
       features: ['3 унтлагын өрөө', 'Уужим зочны өрөө', 'Гал тогооны арал'],
       blurb: 'Том гэр бүлд зориулсан хамгийн уужим орон зай.',
     },

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { clientConfig } from '@/config/client.config'
 
 const NAV_LINKS = [
@@ -18,10 +18,24 @@ const pillClass =
 export function Nav() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <>
-      <header className="sticky top-0 z-50 h-16 bg-surface border-b border-[rgba(42,39,36,0.10)] flex items-center px-4 lg:px-8 justify-between">
+      <header
+        className={[
+          'sticky top-0 z-50 h-16 bg-surface border-b border-[rgba(42,39,36,0.10)]',
+          'flex items-center px-4 lg:px-8 justify-between',
+          'transition-[box-shadow] duration-200',
+          scrolled ? 'shadow-md' : '',
+        ].join(' ')}
+      >
         <Link
           href="/"
           className="font-display text-sm tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oak focus-visible:ring-offset-2"

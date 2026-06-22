@@ -3,6 +3,7 @@ import { cormorant, golos, spaceMono } from './fonts'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { LenisProvider } from '@/components/layout/LenisProvider'
+import { AnimationProvider } from '@/components/motion/AnimationProvider'
 import { clientConfig } from '@/config/client.config'
 import './globals.css'
 
@@ -19,9 +20,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body className="font-body min-h-screen flex flex-col">
         <LenisProvider>
-          <Nav />
-          <div className="flex-1">{children}</div>
-          <Footer />
+          <AnimationProvider>
+            <Nav />
+            <div className="flex-1">{children}</div>
+            <Footer />
+          </AnimationProvider>
         </LenisProvider>
       </body>
     </html>

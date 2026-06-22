@@ -33,6 +33,7 @@ export interface ClientConfig {
   buildingName: string
   tagline: string
   logo: string
+  heroImage?: string
   theme: {
     oak: string
     sage: string
