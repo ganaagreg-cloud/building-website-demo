@@ -1,4 +1,5 @@
 import { Hero } from '@/components/sections/home/Hero'
+import { TourLoader } from '@/components/tour/TourLoader'
 import { ResidencesPreview } from '@/components/sections/home/ResidencesPreview'
 import { AvailabilityTeaser } from '@/components/sections/home/AvailabilityTeaser'
 import { BookingCTA } from '@/components/sections/home/BookingCTA'
@@ -11,18 +12,7 @@ export default async function HomePage() {
   return (
     <main>
       <Hero buildingName={clientConfig.buildingName} tagline={clientConfig.tagline} />
-
-      {/* Tour placeholder — replaced in Phase 9 */}
-      <section
-        id="tour"
-        aria-label="Орон сууцны аялал"
-        className="w-full h-[60vh] bg-surface-raised flex items-center justify-center border-y border-[rgba(42,39,36,0.10)]"
-      >
-        <p className="font-utility text-[12px] text-muted tracking-widest uppercase">
-          Cinematic scroll-scrub tour — coming soon
-        </p>
-      </section>
-
+      <TourLoader frames={clientConfig.tourFrames ?? []} />
       <ResidencesPreview unitTypes={unitTypes} />
       <AvailabilityTeaser units={units} unitTypes={unitTypes} />
       <BookingCTA />
