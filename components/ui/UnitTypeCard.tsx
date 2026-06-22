@@ -14,7 +14,7 @@ export function UnitTypeCard({ unitType }: UnitTypeCardProps) {
   return (
     <Link
       href={`/residences/${unitType.id}`}
-      className="group block bg-surface-raised rounded-md shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oak focus-visible:ring-offset-2"
+      className="group block bg-surface-raised rounded-md overflow-hidden shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oak focus-visible:ring-offset-2"
     >
       <div className="relative aspect-video overflow-hidden rounded-none">
         <Image

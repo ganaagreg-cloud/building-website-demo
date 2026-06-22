@@ -1,7 +1,9 @@
+import type { ReactNode } from 'react'
+
 interface SectionWrapperProps {
   number?: string
   className?: string
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export function SectionWrapper({ number, className = '', children }: SectionWrapperProps) {

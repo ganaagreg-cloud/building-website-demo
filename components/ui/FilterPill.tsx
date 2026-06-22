@@ -7,6 +7,7 @@ interface FilterPillProps {
 export function FilterPill({ label, active, onClick }: FilterPillProps) {
   return (
     <button
+      type="button"
       onClick={onClick}
       aria-pressed={active}
       className={[

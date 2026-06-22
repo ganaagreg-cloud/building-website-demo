@@ -1,6 +1,6 @@
 'use client'
 
-import { type InputHTMLAttributes, type TextareaHTMLAttributes, useId } from 'react'
+import { type InputHTMLAttributes, type TextareaHTMLAttributes, type SelectHTMLAttributes, useId } from 'react'
 
 interface BaseProps {
   label: string
@@ -13,7 +13,7 @@ type TextareaProps = BaseProps & TextareaHTMLAttributes<HTMLTextAreaElement> & {
 type SelectProps = BaseProps & {
   as: 'select'
   options: { value: string; label: string }[]
-} & Omit<InputHTMLAttributes<HTMLSelectElement>, 'children'>
+} & Omit<SelectHTMLAttributes<HTMLSelectElement>, 'children'>
 
 type FormInputProps = InputProps | TextareaProps | SelectProps
 
@@ -53,7 +53,7 @@ export function FormInput(props: FormInputProps) {
           aria-invalid={!!error}
           aria-describedby={error ? `${id}-error` : undefined}
           className={fieldClass}
-          {...(rest as Omit<InputHTMLAttributes<HTMLSelectElement>, 'children'>)}
+          {...(rest as Omit<SelectHTMLAttributes<HTMLSelectElement>, 'children'>)}
         >
           {(props as SelectProps).options.map((o) => (
             <option key={o.value} value={o.value}>
