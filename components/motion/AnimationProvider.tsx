@@ -11,70 +11,53 @@ export function AnimationProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
 
   useEffect(() => {
-    const mm = gsap.matchMedia()
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    mm.add('(prefers-reduced-motion: no-preference)', () => {
-      // Small tick ensures the page DOM is fully rendered
-      const rafId = requestAnimationFrame(() => {
+    let ctx: gsap.Context | undefined
+    const rafId = requestAnimationFrame(() => {
+      ctx = gsap.context(() => {
         // 1. Hero name: fade + rise on load
         const heroName = document.querySelector<HTMLElement>('[data-hero-name]')
         if (heroName) {
-          gsap.from(heroName, {
-            y: 20,
-            opacity: 0,
-            duration: 0.8,
-            ease: 'power2.out',
-            delay: 0.15,
-          })
+          gsap.from(heroName, { y: 20, opacity: 0, duration: 0.8, ease: 'power2.out', delay: 0.15 })
         }
 
         // 2. Hero tagline
         const heroSub = document.querySelector<HTMLElement>('[data-hero-sub]')
         if (heroSub) {
-          gsap.from(heroSub, {
-            y: 12,
-            opacity: 0,
-            duration: 0.6,
-            ease: 'power2.out',
-            delay: 0.45,
-          })
+          gsap.from(heroSub, { y: 12, opacity: 0, duration: 0.6, ease: 'power2.out', delay: 0.45 })
         }
 
         // 3. Hero CTA
         const heroCta = document.querySelector<HTMLElement>('[data-hero-cta]')
         if (heroCta) {
-          gsap.from(heroCta, {
-            y: 8,
-            opacity: 0,
-            duration: 0.5,
-            ease: 'power2.out',
-            delay: 0.65,
-          })
+          gsap.from(heroCta, { y: 8, opacity: 0, duration: 0.5, ease: 'power2.out', delay: 0.65 })
         }
 
-        // 4. Oak hairlines: scaleX 0 → 1 on scroll-in (hero hairline fires immediately)
+        // 4. Oak hairlines: scaleX 0 → 1
         document.querySelectorAll<HTMLElement>('[data-oak-hairline]').forEach((el) => {
+          const inHero = !!el.closest('[data-hero-section]')
           gsap.from(el, {
             scaleX: 0,
             duration: 0.5,
             ease: 'power2.inOut',
-            delay: el.closest('[data-hero-section]') ? 0.7 : 0,
-            scrollTrigger: el.closest('[data-hero-section]')
-              ? undefined
+            ...(inHero
+              ? { delay: 0.7 }
               : {
-                  trigger: el,
-                  start: 'top 88%',
-                },
+                  scrollTrigger: {
+                    trigger: el,
+                    start: 'top 88%',
+                  },
+                }),
           })
         })
 
-        // 5. Section content reveals — stagger direct children of each section
+        // 5. Section content reveals
         document.querySelectorAll<HTMLElement>('[data-reveal-section]').forEach((section) => {
           const kids = Array.from(section.children).filter(
             (el) => !el.hasAttribute('data-parallax-number'),
           ) as HTMLElement[]
           if (kids.length === 0) return
-
           gsap.from(kids, {
             y: 16,
             opacity: 0,
@@ -89,7 +72,7 @@ export function AnimationProvider({ children }: { children: React.ReactNode }) {
           })
         })
 
-        // 6. Ghost number parallax: drift upward ~40px as section scrolls through
+        // 6. Ghost number parallax
         document.querySelectorAll<HTMLElement>('[data-parallax-number]').forEach((el) => {
           const section = el.closest('section')
           if (!section) return
@@ -107,15 +90,11 @@ export function AnimationProvider({ children }: { children: React.ReactNode }) {
 
         ScrollTrigger.refresh()
       })
-
-      return () => {
-        cancelAnimationFrame(rafId)
-        ScrollTrigger.getAll().forEach((st) => st.kill())
-      }
     })
 
     return () => {
-      mm.revert()
+      cancelAnimationFrame(rafId)
+      ctx?.revert()
     }
   }, [pathname])
 
