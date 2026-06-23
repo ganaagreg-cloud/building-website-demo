@@ -14,13 +14,10 @@ interface ScrollScrubTourProps {
 export function ScrollScrubTour({ frames }: ScrollScrubTourProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const prefersReducedMotion =
-    typeof window !== 'undefined'
-      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      : false
 
   useEffect(() => {
-    if (prefersReducedMotion || frames.length === 0) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (frames.length === 0) return
 
     const section = sectionRef.current
     const canvas = canvasRef.current
@@ -29,24 +26,12 @@ export function ScrollScrubTour({ frames }: ScrollScrubTourProps) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    // Size canvas to match its CSS display size
-    function resizeCanvas() {
-      if (!canvas) return
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio
-    }
-    resizeCanvas()
-    window.addEventListener('resize', resizeCanvas)
-
-    // Preload all frames
-    const images: HTMLImageElement[] = []
-    let loadedCount = 0
-    let allLoaded = false
+    const state = { frame: 0 }
 
     function drawFrame(index: number) {
       if (!ctx || !canvas) return
-      const img = images[index]
-      if (!img?.complete) return
+      const img = images[Math.round(index)]
+      if (!img?.complete || img.naturalWidth === 0) return
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       const scale = Math.max(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight)
       const w = img.naturalWidth * scale
@@ -54,41 +39,36 @@ export function ScrollScrubTour({ frames }: ScrollScrubTourProps) {
       ctx.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h)
     }
 
-    if (frames.length === 0) {
-      allLoaded = true
-    } else {
-      frames.forEach((src, i) => {
-        const img = new window.Image()
-        img.src = src
-        img.onload = () => {
-          loadedCount++
-          if (i === 0) drawFrame(0)
-          if (loadedCount === frames.length) allLoaded = true
-        }
-        img.onerror = () => {
-          loadedCount++
-          if (loadedCount === frames.length) allLoaded = true
-        }
-        images[i] = img
-      })
+    function resizeCanvas() {
+      if (!canvas) return
+      canvas.width = canvas.offsetWidth * window.devicePixelRatio
+      canvas.height = canvas.offsetHeight * window.devicePixelRatio
+      drawFrame(state.frame)
     }
 
-    const state = { frame: 0 }
+    resizeCanvas()
+    window.addEventListener('resize', resizeCanvas)
 
+    // Preload all frames; draw frame 0 as soon as it's ready
+    const images: HTMLImageElement[] = frames.map((src, i) => {
+      const img = new window.Image()
+      img.src = src
+      img.onload = () => { if (i === 0) drawFrame(0) }
+      return img
+    })
+
+    // ~80px of scroll per frame — substantial enough to feel cinematic
     const tween = gsap.to(state, {
       frame: frames.length - 1,
-      snap: 'frame',
       ease: 'none',
       scrollTrigger: {
         trigger: section,
         start: 'top top',
-        end: () => `+=${frames.length * 5}`,
-        scrub: 0.5,
+        end: `+=${frames.length * 80}`,
+        scrub: 1,
         pin: true,
         anticipatePin: 1,
-        onUpdate: () => {
-          if (allLoaded) drawFrame(Math.round(state.frame))
-        },
+        onUpdate: () => drawFrame(state.frame),
       },
     })
 
@@ -97,9 +77,9 @@ export function ScrollScrubTour({ frames }: ScrollScrubTourProps) {
       tween.kill()
       window.removeEventListener('resize', resizeCanvas)
     }
-  }, [frames, prefersReducedMotion])
+  }, [frames])
 
-  if (prefersReducedMotion) {
+  if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     return <TourFallback frames={frames} />
   }
 
