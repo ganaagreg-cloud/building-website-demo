@@ -9,7 +9,7 @@ export const cormorant = Cormorant_Garamond({
 
 export const golos = Golos_Text({
   subsets: ['latin', 'cyrillic-ext'],
-  weight: ['400', '500'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-body',
   display: 'swap',
 })

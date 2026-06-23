@@ -1,21 +1,36 @@
-import { Hero } from '@/components/sections/home/Hero'
-import { TourLoader } from '@/components/tour/TourLoader'
-import { ResidencesPreview } from '@/components/sections/home/ResidencesPreview'
-import { AvailabilityTeaser } from '@/components/sections/home/AvailabilityTeaser'
-import { BookingCTA } from '@/components/sections/home/BookingCTA'
-import { getUnitTypes, getUnits } from '@/lib/data/adapter'
+import React from 'react'
 import { clientConfig } from '@/config/client.config'
+import type { HomeSection } from '@/types'
+import { HeroSection } from '@/components/home/sections/HeroSection'
+import { ScrollVideoSection } from '@/components/home/sections/ScrollVideoSection'
+import { ManifestoSection } from '@/components/home/sections/ManifestoSection'
+import { DollhouseRevealSection } from '@/components/home/sections/DollhouseRevealSection'
 
-export default async function HomePage() {
-  const [unitTypes, units] = await Promise.all([getUnitTypes(), getUnits()])
+function renderSection(section: HomeSection): React.ReactNode {
+  switch (section.kind) {
+    case 'hero':
+      return <HeroSection config={section} />
+    case 'scrollVideo':
+      return <ScrollVideoSection config={section} />
+    case 'manifesto':
+      return <ManifestoSection config={section} />
+    case 'dollhouseReveal':
+      return <DollhouseRevealSection config={section} />
+  }
+}
+
+export default function HomePage() {
+  const sections = clientConfig.home?.sections ?? []
 
   return (
     <main>
-      <Hero buildingName={clientConfig.buildingName} tagline={clientConfig.tagline} heroImage={clientConfig.heroImage} />
-      <TourLoader frames={clientConfig.tourFrames ?? []} />
-      <ResidencesPreview unitTypes={unitTypes} />
-      <AvailabilityTeaser units={units} unitTypes={unitTypes} />
-      <BookingCTA />
+      {sections.map((section, i) =>
+        section.enabled ? (
+          <React.Fragment key={`${section.kind}-${i}`}>
+            {renderSection(section)}
+          </React.Fragment>
+        ) : null,
+      )}
     </main>
   )
 }

@@ -1,5 +1,45 @@
 export type UnitStatus = 'available' | 'reserved' | 'sold'
 
+// ─── Home page section configs ───────────────────────────────────────────────
+
+export interface HeroSectionConfig {
+  kind: 'hero'
+  enabled: boolean
+  headline: string
+  sub: string
+  imageSrc: string
+}
+
+export interface ScrollVideoSectionConfig {
+  kind: 'scrollVideo'
+  enabled: boolean
+  videoSrc: string
+}
+
+export interface ManifestoSectionConfig {
+  kind: 'manifesto'
+  enabled: boolean
+  lines: string[]
+}
+
+export interface DollhouseRevealSectionConfig {
+  kind: 'dollhouseReveal'
+  enabled: boolean
+  imageSrc: string
+}
+
+export type HomeSection =
+  | HeroSectionConfig
+  | ScrollVideoSectionConfig
+  | ManifestoSectionConfig
+  | DollhouseRevealSectionConfig
+
+export interface HomeConfig {
+  sections: HomeSection[]
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 export type Orientation =
   | 'north' | 'south' | 'east' | 'west'
   | 'north-east' | 'north-west' | 'south-east' | 'south-west'
@@ -46,4 +86,5 @@ export interface ClientConfig {
   tourFrames?: string[]
   unitTypes: UnitType[]
   units: Unit[]
+  home?: HomeConfig
 }

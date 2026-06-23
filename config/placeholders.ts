@@ -9,8 +9,12 @@ export const BLUR_URL =
   'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjYiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjYiIGZpbGw9IiNFREU0RDMiLz48L3N2Zz4='
 
 export const PLACEHOLDER_IMAGES = {
-  // Hero — building exterior
+  // Hero — building exterior / flagship render
   hero: `${base}/photo-1545324418-cc1a3fa10c00${Q}`,
+
+  // Dollhouse reveal — dramatic interior cross-section or interior render
+  // REPLACE with: Five Star dollhouse/isometric interior render
+  dollhouse: `${base}/photo-1560185007-5f0bb1866cab${Q}`,
 
   // Unit type card images (one per type)
   studio:  `${base}/photo-1522708323590-d24dbb6b0267${Q}`,

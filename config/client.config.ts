@@ -2,6 +2,36 @@ import type { ClientConfig } from '@/types'
 import { PLACEHOLDER_IMAGES } from './placeholders'
 
 export const clientConfig: ClientConfig = {
+  home: {
+    sections: [
+      {
+        kind: 'hero',
+        enabled: true,
+        headline: 'Таны мөрөөдлийн орон сууц',
+        sub: 'Доош гүйлгээд төслийг бүрэн мэдрээрэй',
+        imageSrc: PLACEHOLDER_IMAGES.hero,
+      },
+      {
+        kind: 'scrollVideo',
+        enabled: false, // TODO: scroll-video clip pending — see REFERENCE.md §2
+        videoSrc: '/assets/demo/tour-clip.mp4',
+      },
+      {
+        kind: 'manifesto',
+        enabled: true,
+        lines: [
+          'Архитектур амьдралтай уулзах цэг.',
+          'Өрөө бүр тань зориулагдсан.',
+          'Таны гэр энд эхэлнэ.',
+        ],
+      },
+      {
+        kind: 'dollhouseReveal',
+        enabled: true,
+        imageSrc: PLACEHOLDER_IMAGES.dollhouse,
+      },
+    ],
+  },
   slug: 'demo',
   buildingName: 'Шинэ Улаанбаатар',
   tagline: 'Таны шинэ гэр',

@@ -60,3 +60,10 @@ Cinematic, scroll-driven, **multi-page** apartment-sales website for Mongolian r
 - Use `localStorage` / `sessionStorage`.
 - Expose secrets (Telegram/email/API keys) to the client — server routes/actions only.
 - Build a click-next carousel for the tour.
+## Skill scoping (design authority)
+- **Home page (cinematic journey):** use `design-taste-frontend-v1` as the aesthetic
+  driver — high motion, high layout variance, anti-generic. This page is the sales weapon.
+- **All other pages (Residences, Residence detail, Availability, Location, About, Contact):**
+  use `production-ui-design` as the authority — consistent, conversion-focused, predictable.
+  Do NOT apply taste-skill's high-variance rules here.
+- Both pages obey the palette tokens in REFERENCE.md. Tokens override any skill's default colors.

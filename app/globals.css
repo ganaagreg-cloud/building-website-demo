@@ -40,6 +40,18 @@
   --color-number: rgba(42, 39, 36, 0.04);
   --color-text-disabled: rgba(42, 39, 36, 0.40);
   --section-padding: 96px;
+
+  /* REFERENCE.md palette — home cinematic sections (authoritative) */
+  --bg-light:    #FAFAF8;
+  --bg-pure:     #FFFFFF;
+  --text:        #1C1A17;
+  --text-soft:   #6B6457;
+  --bg-dark:     #2A241E;
+  --bg-dark-2:   #3A332B;
+  --accent:      #7C8B6F;
+  --accent-warm: #B8A687;
+  --line:        #ECEAE4;
+  --line-dark:   #4A4239;
 }
 
 @media (min-width: 1024px) {
@@ -67,4 +79,15 @@ img, video, canvas {
 :focus-visible {
   outline: 2px solid var(--color-oak);
   outline-offset: 2px;
+}
+
+@keyframes scrollPulse {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  30%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: translateY(200%); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes scrollPulse { from, to { opacity: 0; } }
 }
