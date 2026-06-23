@@ -5,6 +5,8 @@ import { HeroSection } from '@/components/home/sections/HeroSection'
 import { ScrollVideoSection } from '@/components/home/sections/ScrollVideoSection'
 import { ManifestoSection } from '@/components/home/sections/ManifestoSection'
 import { DollhouseRevealSection } from '@/components/home/sections/DollhouseRevealSection'
+import { FeatureStepsSection } from '@/components/home/sections/FeatureStepsSection'
+import { InteriorPhotoSection } from '@/components/home/sections/InteriorPhotoSection'
 
 function renderSection(section: HomeSection): React.ReactNode {
   switch (section.kind) {
@@ -16,6 +18,10 @@ function renderSection(section: HomeSection): React.ReactNode {
       return <ManifestoSection config={section} />
     case 'dollhouseReveal':
       return <DollhouseRevealSection config={section} />
+    case 'featureSteps':
+      return <FeatureStepsSection config={section} />
+    case 'interiorPhoto':
+      return <InteriorPhotoSection config={section} />
   }
 }
 

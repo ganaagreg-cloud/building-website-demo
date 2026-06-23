@@ -30,6 +30,43 @@ export const clientConfig: ClientConfig = {
         enabled: true,
         imageSrc: PLACEHOLDER_IMAGES.dollhouse,
       },
+      {
+        kind: 'featureSteps',
+        enabled: true,
+        label: 'Барилгын онцлог',
+        steps: [
+          {
+            index: '01',
+            title: 'Гэрэлд дурласан орон зай',
+            body: 'Шалнаас тааз хүртэлх цонхнууд өдрийн гэрлийг өрөө бүрд урьж, агаар нэвт цэлмэг мэдрэмжийг төрүүлнэ.',
+            image: PLACEHOLDER_IMAGES.renders[0]!,
+          },
+          {
+            index: '02',
+            title: 'Байгалийн материал',
+            body: 'Царс мод, чулуу, дулаахан өнгөний эвсэл — гар бүрд мэдрэгдэх чанарын нарийн ширийн.',
+            image: PLACEHOLDER_IMAGES.renders[1]!,
+          },
+          {
+            index: '03',
+            title: 'Нээлттэй гал тогоо',
+            body: 'Зочид хүлээн авах, амрах, хооллох орон зай нэгдэж, гэр бүлийн амьдрал чөлөөтэй урсана.',
+            image: PLACEHOLDER_IMAGES.renders[2]!,
+          },
+          {
+            index: '04',
+            title: 'Хотын дээгүүрх амар амгалан',
+            body: 'Хувийн тагт болон чимээгүй буланг хотын эргэлдээн дунд таны хувийн нөмөр болгон зориуджээ.',
+            image: PLACEHOLDER_IMAGES.renders[3]!,
+          },
+        ],
+      },
+      {
+        kind: 'interiorPhoto',
+        enabled: true,
+        image: PLACEHOLDER_IMAGES.interior,
+        caption: 'Амьдрал эхлэх орон зай.',
+      },
     ],
   },
   slug: 'demo',

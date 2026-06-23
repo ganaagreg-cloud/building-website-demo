@@ -28,11 +28,34 @@ export interface DollhouseRevealSectionConfig {
   imageSrc: string
 }
 
+export interface FeatureStep {
+  index: string
+  title: string
+  body: string
+  image: string
+}
+
+export interface FeatureStepsSectionConfig {
+  kind: 'featureSteps'
+  enabled: boolean
+  label: string
+  steps: FeatureStep[]
+}
+
+export interface InteriorPhotoSectionConfig {
+  kind: 'interiorPhoto'
+  enabled: boolean
+  image: string
+  caption?: string
+}
+
 export type HomeSection =
   | HeroSectionConfig
   | ScrollVideoSectionConfig
   | ManifestoSectionConfig
   | DollhouseRevealSectionConfig
+  | FeatureStepsSectionConfig
+  | InteriorPhotoSectionConfig
 
 export interface HomeConfig {
   sections: HomeSection[]

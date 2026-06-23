@@ -3,6 +3,7 @@
 // to real client renders without touching any component.
 
 const Q = '?w=1200&q=85&auto=format&fit=crop'
+const QL = '?w=2000&q=85&auto=format&fit=crop'
 const base = 'https://images.unsplash.com'
 
 export const BLUR_URL =
@@ -29,4 +30,17 @@ export const PLACEHOLDER_IMAGES = {
     `${base}/photo-1574362848149-11496d93a7c7${Q}`,
     `${base}/photo-1598928506311-c55ded91a20c${Q}`,
   ],
+
+  // 3D architectural renders — pinned feature-steps section.
+  // One render per step; image swaps as steps scroll past.
+  // REPLACE with: Five Star finish/amenity renders in walk order.
+  renders: [
+    `${base}/photo-1545324418-cc1a3fa10c00${QL}`,
+    `${base}/photo-1502672260266-1c1ef2d93688${QL}`,
+    `${base}/photo-1560448204-e02f11c3d0e2${QL}`,
+    `${base}/photo-1574362848149-11496d93a7c7${QL}`,
+  ],
+
+  // Full-bleed interior render — big cinematic break.
+  interior: `${base}/photo-1598928506311-c55ded91a20c${QL}`,
 } as const
