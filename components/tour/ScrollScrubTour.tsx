@@ -4,14 +4,16 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { TourFallback } from './TourFallback'
+import { SampleVizCaption } from '@/components/common/SampleVizCaption'
 
 gsap.registerPlugin(ScrollTrigger)
 
 interface ScrollScrubTourProps {
   frames: string[]
+  isSampleVisualization?: boolean
 }
 
-export function ScrollScrubTour({ frames }: ScrollScrubTourProps) {
+export function ScrollScrubTour({ frames, isSampleVisualization }: ScrollScrubTourProps) {
   const sectionRef = useRef<HTMLElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -105,9 +107,14 @@ export function ScrollScrubTour({ frames }: ScrollScrubTourProps) {
       id="tour"
       ref={sectionRef}
       aria-label="Орон сууцны аялал"
-      className="w-full h-screen overflow-hidden"
+      className="relative w-full h-screen overflow-hidden"
     >
       <canvas ref={canvasRef} className="w-full h-full block" aria-hidden="true" />
+      {isSampleVisualization && (
+        <div className="absolute bottom-5 right-5 md:bottom-6 md:right-8">
+          <SampleVizCaption tone="light" />
+        </div>
+      )}
     </section>
   )
 }

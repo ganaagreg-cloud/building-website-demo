@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import gsap from 'gsap'
 import type { HeroSectionConfig } from '@/types'
+import { SampleVizCaption } from '@/components/common/SampleVizCaption'
 
 export function HeroSection({ config }: { config: HeroSectionConfig }) {
   const imageRef = useRef<HTMLDivElement>(null)
@@ -130,6 +131,13 @@ export function HeroSection({ config }: { config: HeroSectionConfig }) {
           {config.sub}
         </p>
       </div>
+
+      {/* Sample-visualization disclosure — bottom-right, unobtrusive */}
+      {config.isSampleVisualization && (
+        <div className="absolute bottom-5 right-5 md:bottom-6 md:right-8">
+          <SampleVizCaption tone="light" />
+        </div>
+      )}
 
       {/* Scroll hint — bottom-center */}
       <div

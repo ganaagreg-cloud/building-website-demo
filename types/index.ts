@@ -8,6 +8,9 @@ export interface HeroSectionConfig {
   headline: string
   sub: string
   imageSrc: string
+  // When true, renders the sample-visualization disclosure caption.
+  // For AI-generated sample interiors shown pre-sale. Default: off.
+  isSampleVisualization?: boolean
 }
 
 export interface ScrollVideoSectionConfig {
@@ -122,6 +125,12 @@ export interface ClientConfig {
     email: string
   }
   tourFrames?: string[]
+  // When true, the scroll-scrub tour shows the sample-visualization caption.
+  // For AI-generated sample interior frames shown pre-sale. Default: off.
+  tourIsSampleVisualization?: boolean
+  // Config-driven disclosure label (not hardcoded in components).
+  // e.g. 'Жишиг дүрслэл' (sample visualization).
+  sampleVisualizationLabel?: string
   unitTypes: UnitType[]
   units: Unit[]
   home?: HomeConfig

@@ -9,8 +9,9 @@ const ScrollScrubTour = dynamic(
 
 interface TourLoaderProps {
   frames: string[]
+  isSampleVisualization?: boolean
 }
 
-export function TourLoader({ frames }: TourLoaderProps) {
-  return <ScrollScrubTour frames={frames} />
+export function TourLoader({ frames, isSampleVisualization }: TourLoaderProps) {
+  return <ScrollScrubTour frames={frames} isSampleVisualization={isSampleVisualization} />
 }

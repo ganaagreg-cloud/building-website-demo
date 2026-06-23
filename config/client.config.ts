@@ -1,5 +1,5 @@
 import type { ClientConfig } from '@/types'
-import { PLACEHOLDER_IMAGES } from './placeholders'
+import { PLACEHOLDER_IMAGES, TOUR_FRAMES } from './placeholders'
 
 export const clientConfig: ClientConfig = {
   home: {
@@ -10,6 +10,8 @@ export const clientConfig: ClientConfig = {
         headline: 'Таны мөрөөдлийн орон сууц',
         sub: 'Доош гүйлгээд төслийг бүрэн мэдрээрэй',
         imageSrc: PLACEHOLDER_IMAGES.hero,
+        // AI sample interior. Flip to true in a real pitch to disclose.
+        isSampleVisualization: false,
       },
       {
         kind: 'scrollVideo',
@@ -108,9 +110,11 @@ export const clientConfig: ClientConfig = {
     phone: '+976 9900 0000',
     email: 'info@demo.mn',
   },
-  tourFrames: Array.from({ length: 40 }, (_, i) =>
-    `/assets/demo/tour/frame_${String(i + 1).padStart(3, '0')}.webp`
-  ),
+  tourFrames: TOUR_FRAMES,
+  // AI sample interior frame sequence. Flip to true in a real pitch to disclose.
+  tourIsSampleVisualization: false,
+  // Config-driven disclosure label (rendered by SampleVizCaption).
+  sampleVisualizationLabel: 'Жишиг дүрслэл',
   unitTypes: [
     {
       id: 'studio',
