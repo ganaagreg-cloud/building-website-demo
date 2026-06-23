@@ -49,6 +49,20 @@ export interface InteriorPhotoSectionConfig {
   caption?: string
 }
 
+export interface PinnedState {
+  heading: string
+  body: string
+  bg: string
+  textColor: string
+}
+
+export interface PinnedImageSectionConfig {
+  kind: 'pinnedImage'
+  enabled: boolean
+  image: string
+  states: PinnedState[]
+}
+
 export type HomeSection =
   | HeroSectionConfig
   | ScrollVideoSectionConfig
@@ -56,6 +70,7 @@ export type HomeSection =
   | DollhouseRevealSectionConfig
   | FeatureStepsSectionConfig
   | InteriorPhotoSectionConfig
+  | PinnedImageSectionConfig
 
 export interface HomeConfig {
   sections: HomeSection[]

@@ -62,6 +62,31 @@ export const clientConfig: ClientConfig = {
         ],
       },
       {
+        kind: 'pinnedImage',
+        enabled: true,
+        image: PLACEHOLDER_IMAGES.renders[0]!,
+        states: [
+          {
+            heading: 'Өглөөний гэрэл',
+            body: 'Зүүн зүгийн өргөн цонхоор нар таны өрөөг дулаахан гэрлээр дүүргэж, өдөр бүр сэргэг мэдрэмжээр эхэлнэ.',
+            bg: '#FAF6EF',
+            textColor: '#1C1A17',
+          },
+          {
+            heading: 'Үдшийн нам гүм',
+            body: 'Дуу чимээ тусгаарласан хана таныг хотын шуугианаас хол, амар амгалан орон зайд байлгана.',
+            bg: '#2A241E',
+            textColor: '#FAF6EF',
+          },
+          {
+            heading: 'Ногоон амьсгал',
+            body: 'Орон сууц бүр байгальтай ойр — хувийн тагт, ногоон зай, цэвэр агаар таны өдөр тутмын хэсэг.',
+            bg: '#3A4A3A',
+            textColor: '#FAF6EF',
+          },
+        ],
+      },
+      {
         kind: 'interiorPhoto',
         enabled: true,
         image: PLACEHOLDER_IMAGES.interior,

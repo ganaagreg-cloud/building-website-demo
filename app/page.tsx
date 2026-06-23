@@ -7,6 +7,7 @@ import { ManifestoSection } from '@/components/home/sections/ManifestoSection'
 import { DollhouseRevealSection } from '@/components/home/sections/DollhouseRevealSection'
 import { FeatureStepsSection } from '@/components/home/sections/FeatureStepsSection'
 import { InteriorPhotoSection } from '@/components/home/sections/InteriorPhotoSection'
+import { PinnedImageSection } from '@/components/home/sections/PinnedImageSection'
 
 function renderSection(section: HomeSection): React.ReactNode {
   switch (section.kind) {
@@ -22,6 +23,8 @@ function renderSection(section: HomeSection): React.ReactNode {
       return <FeatureStepsSection config={section} />
     case 'interiorPhoto':
       return <InteriorPhotoSection config={section} />
+    case 'pinnedImage':
+      return <PinnedImageSection config={section} />
   }
 }
 
