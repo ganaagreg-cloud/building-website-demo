@@ -16,7 +16,9 @@ export const clientConfig: ClientConfig = {
     phone: '+976 9900 0000',
     email: 'info@demo.mn',
   },
-  tourFrames: [],
+  tourFrames: Array.from({ length: 40 }, (_, i) =>
+    `/assets/demo/tour/frame_${String(i + 1).padStart(3, '0')}.webp`
+  ),
   unitTypes: [
     {
       id: 'studio',
