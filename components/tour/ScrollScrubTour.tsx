@@ -28,6 +28,9 @@ export function ScrollScrubTour({ frames }: ScrollScrubTourProps) {
 
     const state = { frame: 0 }
 
+    // Declare images BEFORE drawFrame / resizeCanvas reference it
+    const images: HTMLImageElement[] = []
+
     function drawFrame(index: number) {
       if (!ctx || !canvas) return
       const img = images[Math.round(index)]
@@ -46,18 +49,18 @@ export function ScrollScrubTour({ frames }: ScrollScrubTourProps) {
       drawFrame(state.frame)
     }
 
+    // Safe to call now — images is already declared (empty array)
     resizeCanvas()
     window.addEventListener('resize', resizeCanvas)
 
-    // Preload all frames; draw frame 0 as soon as it's ready
-    const images: HTMLImageElement[] = frames.map((src, i) => {
+    // Populate images after resizeCanvas is wired up
+    frames.forEach((src, i) => {
       const img = new window.Image()
       img.src = src
       img.onload = () => { if (i === 0) drawFrame(0) }
-      return img
+      images[i] = img
     })
 
-    // ~80px of scroll per frame — substantial enough to feel cinematic
     const tween = gsap.to(state, {
       frame: frames.length - 1,
       ease: 'none',
@@ -104,11 +107,7 @@ export function ScrollScrubTour({ frames }: ScrollScrubTourProps) {
       aria-label="Орон сууцны аялал"
       className="w-full h-screen overflow-hidden"
     >
-      <canvas
-        ref={canvasRef}
-        className="w-full h-full block"
-        aria-hidden="true"
-      />
+      <canvas ref={canvasRef} className="w-full h-full block" aria-hidden="true" />
     </section>
   )
 }
