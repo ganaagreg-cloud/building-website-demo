@@ -6,30 +6,48 @@ import gsap from 'gsap'
 import type { HeroSectionConfig } from '@/types'
 
 export function HeroSection({ config }: { config: HeroSectionConfig }) {
+  const imageRef = useRef<HTMLDivElement>(null)
   const headlineRef = useRef<HTMLHeadingElement>(null)
   const subRef = useRef<HTMLParagraphElement>(null)
   const scrollHintRef = useRef<HTMLDivElement>(null)
 
+  // Split the headline into words so each can rise behind its own mask.
+  const words = config.headline.split(' ')
+
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    const tl = gsap.timeline({ delay: 0.15 })
-    tl.from(headlineRef.current, {
-      y: 52,
-      opacity: 0,
-      duration: 1.2,
+    const wordEls = headlineRef.current?.querySelectorAll('[data-word]')
+    if (!wordEls) return
+
+    const tl = gsap.timeline({ delay: 0.2 })
+
+    // Word-by-word mask reveal — each word slides up from behind its clip.
+    tl.from(wordEls, {
+      yPercent: 115,
+      duration: 1,
       ease: 'power3.out',
+      stagger: 0.08,
     })
       .from(
         subRef.current,
-        { y: 20, opacity: 0, duration: 0.8, ease: 'power2.out' },
-        '-=0.75',
+        { y: 18, opacity: 0, duration: 0.8, ease: 'power2.out' },
+        '-=0.55',
       )
       .from(
         scrollHintRef.current,
         { opacity: 0, y: 8, duration: 0.6, ease: 'power2.out' },
         '-=0.4',
       )
+
+    // Slow Ken Burns push-in on the building render — the "alive" signal.
+    if (imageRef.current) {
+      gsap.fromTo(
+        imageRef.current,
+        { scale: 1.08 },
+        { scale: 1, duration: 9, ease: 'power1.out' },
+      )
+    }
 
     return () => { tl.kill() }
   }, [])
@@ -40,15 +58,18 @@ export function HeroSection({ config }: { config: HeroSectionConfig }) {
       className="relative w-full overflow-hidden"
       style={{ height: '100svh', minHeight: '600px', backgroundColor: 'var(--bg-dark)' }}
     >
-      <Image
-        src={config.imageSrc}
-        alt="Five Star Residence барилга"
-        fill
-        priority
-        className="object-cover"
-        sizes="100vw"
-        style={{ opacity: 0.68 }}
-      />
+      {/* Image wrapper — Ken Burns push-in animates this layer */}
+      <div ref={imageRef} className="absolute inset-0" style={{ willChange: 'transform' }}>
+        <Image
+          src={config.imageSrc}
+          alt="Five Star Residence барилга"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+          style={{ opacity: 0.68 }}
+        />
+      </div>
 
       {/* Cinematic gradient — heavier at bottom, clears toward top */}
       <div
@@ -74,7 +95,19 @@ export function HeroSection({ config }: { config: HeroSectionConfig }) {
             letterSpacing: '-0.03em',
           }}
         >
-          {config.headline}
+          {words.map((word, i) => (
+            <span key={i} className="inline-block whitespace-nowrap">
+              <span
+                className="inline-block overflow-hidden align-bottom"
+                style={{ paddingBottom: '0.12em', marginBottom: '-0.12em' }}
+              >
+                <span data-word className="inline-block">
+                  {word}
+                </span>
+              </span>
+              {i < words.length - 1 ? ' ' : ''}
+            </span>
+          ))}
         </h1>
 
         {/* Sage accent line */}
