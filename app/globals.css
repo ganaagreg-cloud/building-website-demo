@@ -11,6 +11,8 @@
   --color-muted: #6B655C;
   --color-on-oak: #FAF6EF;
   --color-error: #C0574A;
+  --color-accent: #C0574A;
+  --color-on-dark: #FAF6EF;
 
   /* Font families */
   --font-display: "Cormorant Garamond", Georgia, serif;
