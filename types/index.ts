@@ -40,6 +40,7 @@ export interface DollhouseRevealSectionConfig {
   kind: 'dollhouseReveal'
   enabled: boolean
   imageSrc: string
+  depthSrc?: string
 }
 
 export interface FeatureStep {
@@ -133,6 +134,7 @@ export interface UnitType {
   sizeRange: [number, number]
   priceFrom: number
   floorPlanImage: string
+  floorPlanDepthMap?: string
   gallery: string[]
   features: string[]
   blurb: string
