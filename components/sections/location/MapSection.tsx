@@ -24,7 +24,7 @@ export function MapSection() {
                 borderRadius: '50%',
                 backgroundColor: 'var(--color-accent)',
                 margin: '0 auto 8px',
-                boxShadow: '0 0 0 4px rgba(192,87,74,0.2)',
+                boxShadow: '0 0 0 4px rgba(184,148,106,0.25)',
               }}
             />
             <p

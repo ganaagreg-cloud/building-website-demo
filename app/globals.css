@@ -11,7 +11,7 @@
   --color-muted: #6B655C;
   --color-on-oak: #FAF6EF;
   --color-error: #C0574A;
-  --color-accent: #C0574A;
+  --color-accent: #B8946A;
   --color-on-dark: #FAF6EF;
 
   /* Font families */
@@ -95,7 +95,13 @@ img, video, canvas {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes navOverlayIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   @keyframes scrollPulse { from, to { opacity: 0; } }
   @keyframes fadeUp { from, to { opacity: 1; transform: none; } }
+  @keyframes navOverlayIn { from, to { opacity: 1; transform: none; } }
 }

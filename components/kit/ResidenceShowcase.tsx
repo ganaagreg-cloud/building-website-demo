@@ -11,6 +11,7 @@ interface ResidenceShowcaseProps {
   total: number
   side?: 'left' | 'right'
   theme?: 'light' | 'dark'
+  isLast?: boolean
 }
 
 function formatPrice(n: number) {
@@ -23,6 +24,7 @@ export function ResidenceShowcase({
   total,
   side = 'left',
   theme = 'light',
+  isLast = false,
 }: ResidenceShowcaseProps) {
   const imageSrc = unitType.dollhouseImage ?? unitType.gallery[0] ?? unitType.floorPlanImage
   const bg = theme === 'dark' ? 'var(--bg-dark)' : 'var(--color-surface)'
@@ -81,7 +83,7 @@ export function ResidenceShowcase({
   )
 
   return (
-    <div style={{ backgroundColor: bg, borderBottom: `1px solid ${borderColor}` }}>
+    <div style={{ backgroundColor: bg, borderBottom: isLast ? 'none' : `1px solid ${borderColor}` }}>
       <div className="max-w-content mx-auto px-4 lg:px-8 py-20 flex flex-col md:flex-row gap-12 items-center">
         {side === 'left' ? (
           <>

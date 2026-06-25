@@ -38,6 +38,7 @@ export async function ResidenceShowcaseSection({
           total={unitTypes.length}
           side={i % 2 === 0 ? 'left' : 'right'}
           theme={i % 2 === 0 ? 'light' : 'dark'}
+          isLast={i === unitTypes.length - 1}
         />
       ))}
     </section>

@@ -1,6 +1,5 @@
 import { getUnitTypes, getUnits } from '@/lib/data/adapter'
 import { Eyebrow } from '@/components/kit/Eyebrow'
-import { EditorialHeading } from '@/components/kit/EditorialHeading'
 import { AvailabilityTable } from '@/components/sections/availability/AvailabilityTable'
 
 export default async function AvailabilityPage() {
@@ -13,23 +12,42 @@ export default async function AvailabilityPage() {
         className="max-w-content mx-auto px-4 lg:px-8"
         style={{ paddingTop: 'calc(var(--section-padding) + 64px)', paddingBottom: '3rem' }}
       >
-        <Eyebrow label="Хүртээмжтэй орон сууц" className="mb-8" />
-        <EditorialHeading
-          parts={[{ text: 'Боломжтой ' }, { text: 'орон сууц', accent: 'italic' as const }]}
-          as="h1"
-          style={{ fontSize: 'clamp(2.4rem, 6vw, 4rem)', marginBottom: '1rem' }}
-        />
-        <p
-          className="font-display font-light"
-          style={{ fontSize: 'clamp(2rem, 4.5vw, 3rem)', color: 'var(--color-oak)' }}
+        <Eyebrow label="Боломжтой орон сууц" className="mb-6" />
+
+        {/* Count IS the H1 — the number dominates */}
+        <div
+          className="flex items-baseline flex-wrap"
+          style={{ gap: '1.25rem', marginBottom: '1.5rem' }}
         >
-          {availableCount}
-        </p>
+          <h1
+            className="font-display font-light"
+            style={{
+              fontSize: 'clamp(5rem, 18vw, 10rem)',
+              lineHeight: 1,
+              color: 'var(--color-oak)',
+              letterSpacing: '-0.02em',
+              margin: 0,
+            }}
+          >
+            {availableCount}
+          </h1>
+          <span
+            className="font-display font-light"
+            style={{
+              fontSize: 'clamp(1.4rem, 4vw, 2.2rem)',
+              color: 'var(--color-text)',
+              lineHeight: 1.2,
+            }}
+          >
+            нэгж<br />боломжтой
+          </span>
+        </div>
+
         <p
-          className="font-body mb-8"
-          style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)' }}
+          className="font-body"
+          style={{ fontSize: '1rem', color: 'var(--color-muted)', maxWidth: '440px' }}
         >
-          нэгж боломжтой
+          Давхар, хэмжээ, чиглэлээр шүүж, тохирох орон сууцаа олоорой.
         </p>
       </div>
 

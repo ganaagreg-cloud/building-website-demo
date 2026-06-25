@@ -129,34 +129,51 @@ export function Nav() {
       {open && (
         <div
           className="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-8"
-          style={{ backgroundColor: 'var(--bg-dark)' }}
+          style={{
+            backgroundColor: 'var(--color-surface)',
+            animation: 'navOverlayIn 0.2s ease-out both',
+          }}
           role="dialog"
           aria-modal="true"
           aria-label="Навигаци"
         >
           <button
             type="button"
-            className="absolute top-5 right-5 p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-            style={{ color: 'rgba(255,255,255,0.6)' }}
+            className="absolute top-5 right-5 p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
+            style={{ color: 'var(--color-muted)', fontSize: '1.125rem' }}
             aria-label="Хаах"
             onClick={() => setOpen(false)}
           >
             ✕
           </button>
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="font-body font-semibold text-3xl tracking-tight text-white"
-              onClick={() => setOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const active = pathname === link.href
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="relative font-body font-semibold text-3xl tracking-tight"
+                style={{ color: 'var(--color-text)' }}
+                onClick={() => setOpen(false)}
+              >
+                {link.label}
+                {active && (
+                  <span
+                    aria-hidden
+                    className="absolute -bottom-1.5 left-0 h-px w-full"
+                    style={{ backgroundColor: 'var(--color-oak)' }}
+                  />
+                )}
+              </Link>
+            )
+          })}
           <Link
             href="/contact"
-            className="mt-2 rounded-full px-6 py-2.5 font-body font-semibold text-sm text-white"
-            style={{ backgroundColor: 'var(--accent)' }}
+            className="mt-2 rounded-full px-6 py-2.5 font-body font-semibold text-sm"
+            style={{
+              backgroundColor: 'var(--color-accent)',
+              color: 'var(--color-on-dark)',
+            }}
             onClick={() => setOpen(false)}
           >
             Үзлэг захиалах

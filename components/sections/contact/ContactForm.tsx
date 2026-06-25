@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { FormInput } from '@/components/ui/FormInput'
+import { clientConfig } from '@/config/client.config'
 import type { UnitType } from '@/types'
 
 interface ContactFormProps {
@@ -37,12 +38,48 @@ export function ContactForm({ unitTypes, preselectedTypeId }: ContactFormProps) 
   }
 
   if (submitted) {
+    const phone = clientConfig.contact.phone
+    const telHref = `tel:${phone.replace(/[\s-]/g, '')}`
     return (
-      <div className="py-12 text-center max-w-reading">
-        <h2 className="font-display font-light text-3xl mb-3">Баярлалаа!</h2>
-        <p className="font-body text-base text-muted">
-          Таны мессежийг хүлээн авлаа. Удахгүй холбоо барина.
-        </p>
+      <div className="py-10 max-w-reading flex flex-col gap-6">
+        {/* Oak hairline rule — signals completion */}
+        <div style={{ width: '32px', height: '2px', backgroundColor: 'var(--color-oak)' }} aria-hidden />
+
+        <div className="flex flex-col gap-2">
+          <h2 className="font-display font-light" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', lineHeight: 1.1 }}>
+            Баярлалаа.
+          </h2>
+          <p className="font-body" style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--color-muted)' }}>
+            Таны захиалгыг хүлээн авлаа. Манай баг{' '}
+            <strong className="font-semibold" style={{ color: 'var(--color-text)' }}>
+              24 цагийн дотор
+            </strong>{' '}
+            утасдана.
+          </p>
+        </div>
+
+        {/* Direct phone channel */}
+        <div
+          style={{
+            borderTop: '1px solid var(--color-border)',
+            paddingTop: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.375rem',
+          }}
+        >
+          <p className="font-utility" style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)' }}>
+            Яаралтай бол шууд залгаарай
+          </p>
+          <a
+            href={telHref}
+            className="font-display font-light"
+            style={{ fontSize: 'clamp(1.4rem, 4vw, 2rem)', color: 'var(--color-text)', textDecoration: 'none', lineHeight: 1.1 }}
+            aria-label={`Утасдах: ${phone}`}
+          >
+            {phone}
+          </a>
+        </div>
       </div>
     )
   }
@@ -100,7 +137,7 @@ export function ContactForm({ unitTypes, preselectedTypeId }: ContactFormProps) 
             minHeight: '48px',
             paddingInline: '28px',
             borderRadius: '9999px',
-            backgroundColor: loading ? 'rgba(192,87,74,0.5)' : 'var(--color-accent)',
+            backgroundColor: loading ? 'rgba(184,148,106,0.55)' : 'var(--color-accent)',
             color: 'var(--color-on-dark)',
             fontSize: '0.875rem',
             fontFamily: 'var(--font-body)',

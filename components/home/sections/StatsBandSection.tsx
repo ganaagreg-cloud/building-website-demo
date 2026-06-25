@@ -20,7 +20,7 @@ export function StatsBandSection({ config }: { config: StatsBandSectionConfig })
           theme="dark"
           style={{ fontSize: 'clamp(2.2rem, 5vw, 3.6rem)', marginBottom: '3rem' }}
         />
-        <div className="flex flex-wrap gap-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-16 gap-y-10">
           {config.stats.map((stat) => (
             <StatBig
               key={stat.label}

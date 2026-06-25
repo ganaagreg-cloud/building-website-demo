@@ -15,7 +15,7 @@ export function Eyebrow({ label, theme = 'light', className = '' }: EyebrowProps
       />
       <span
         className="font-body"
-        style={{ fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: textColor }}
+        style={{ fontSize: '11px', letterSpacing: '0.18em', textTransform: 'uppercase', color: textColor }}
       >
         {label}
       </span>

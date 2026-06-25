@@ -28,7 +28,7 @@ export function EditorialHeading({
         }
         if (part.accent === 'red') {
           return (
-            <span key={i} style={{ color: 'var(--color-accent)' }}>
+            <span key={i} style={{ color: 'var(--color-error)' }}>
               {part.text}
             </span>
           )
@@ -40,9 +40,9 @@ export function EditorialHeading({
             </span>
           )
         }
-        // italic
+        // italic — oak warmth, not terracotta
         return (
-          <em key={i} style={{ fontStyle: 'italic', color: 'var(--color-accent)' }}>
+          <em key={i} style={{ fontStyle: 'italic', color: 'var(--color-oak)' }}>
             {part.text}
           </em>
         )

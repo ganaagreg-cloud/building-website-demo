@@ -1,19 +1,20 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import { FilterStrip } from './FilterStrip'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 import type { Unit, UnitType, UnitStatus } from '@/types'
 
 const ORIENTATION_LABELS: Record<string, string> = {
-  north: 'Хойд',
-  south: 'Өмнөд',
-  east: 'Зүүн',
-  west: 'Баруун',
-  'north-east': 'ХЗ',
-  'north-west': 'ХБ',
-  'south-east': 'ӨЗ',
-  'south-west': 'ӨБ',
+  north:       'Хойд',
+  south:       'Өмнөд',
+  east:        'Зүүн',
+  west:        'Баруун',
+  'north-east': 'Хойд-Зүүн',
+  'north-west': 'Хойд-Баруун',
+  'south-east': 'Өмнөд-Зүүн',
+  'south-west': 'Өмнөд-Баруун',
 }
 
 function formatPrice(n: number) {
@@ -39,102 +40,114 @@ export function AvailabilityTable({ units, unitTypes }: Props) {
 
   return (
     <div>
-      <FilterStrip
-        unitTypes={unitTypes}
-        activeTypeId={activeTypeId}
-        activeStatus={activeStatus}
-        onTypeChange={setActiveTypeId}
-        onStatusChange={setActiveStatus}
-      />
+      {/* Sticky filter bar */}
+      <div
+        className="sticky top-16 z-10"
+        style={{ backgroundColor: 'var(--color-surface)', paddingBlock: '1rem', marginBottom: '0.5rem' }}
+      >
+        <FilterStrip
+          unitTypes={unitTypes}
+          activeTypeId={activeTypeId}
+          activeStatus={activeStatus}
+          onTypeChange={setActiveTypeId}
+          onStatusChange={setActiveStatus}
+        />
+      </div>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-16">
-          <h3 className="font-display font-light text-3xl mb-3">Тохирох орон сууц олдсонгүй</h3>
-          <p className="font-body text-sm text-muted">Шүүлтүүрийг өөрчилж дахин хайна уу.</p>
+        <div className="text-center py-20">
+          <h3 className="font-display font-light text-3xl mb-3" style={{ color: 'var(--color-text)' }}>
+            Тохирох орон сууц олдсонгүй
+          </h3>
+          <p className="font-body text-sm" style={{ color: 'var(--color-muted)' }}>
+            Шүүлтүүрийг өөрчилж дахин хайна уу.
+          </p>
         </div>
       ) : (
-        <>
-          {/* Desktop table */}
-          <table
-            className="w-full text-left hidden md:table"
-            aria-label="Орон сууцны жагсаалт"
-          >
-            <thead>
-              <tr className="border-b border-[var(--color-border)]">
-                {['Давхар', 'Төрөл', 'Хэмжээ', 'Чиглэл', 'Үнэ', 'Статус'].map((h) => (
-                  <th
-                    key={h}
-                    className="font-utility pb-3 pr-6 font-normal"
-                    style={{ fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-muted)' }}
-                  >
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((unit) => (
-                <tr
-                  key={unit.id}
-                  className="border-b border-[rgba(42,39,36,0.06)] hover:bg-[rgba(42,39,36,0.03)] transition-colors"
-                >
-                  <td className="font-utility text-[12px] py-4 pr-6">{unit.floor}</td>
-                  <td className="font-utility text-[12px] py-4 pr-6">{typeMap.get(unit.typeId)?.name}</td>
-                  <td className="font-utility text-[12px] py-4 pr-6">{unit.sizeM2} м²</td>
-                  <td className="font-utility text-[12px] py-4 pr-6">
-                    {ORIENTATION_LABELS[unit.orientation] ?? unit.orientation}
-                  </td>
-                  <td
-                    className="font-utility text-[12px] py-4 pr-6"
-                    style={
-                      unit.status === 'sold'
-                        ? { textDecoration: 'line-through', color: 'var(--color-muted)' }
-                        : { color: 'var(--color-oak)' }
-                    }
-                  >
-                    {formatPrice(unit.price)}
-                  </td>
-                  <td className="py-4">
-                    <StatusBadge status={unit.status} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {/* Mobile cards */}
-          <div className="md:hidden flex flex-col gap-4" role="list" aria-label="Орон сууцны жагсаалт">
-            {filtered.map((unit) => (
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px"
+          role="list"
+          aria-label="Орон сууцны жагсаалт"
+          style={{ backgroundColor: 'var(--color-border)' }}
+        >
+          {filtered.map((unit) => {
+            const typeName = typeMap.get(unit.typeId)?.name ?? ''
+            const isSold = unit.status === 'sold'
+            return (
               <div
                 key={unit.id}
                 role="listitem"
-                className="bg-surface-raised rounded-md p-4 relative"
+                style={{
+                  backgroundColor: 'var(--color-surface)',
+                  padding: '1.5rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1rem',
+                  opacity: isSold ? 0.5 : 1,
+                }}
               >
-                <div className="absolute top-4 right-4">
+                {/* Top row: type name + status */}
+                <div className="flex items-start justify-between gap-3">
+                  <span
+                    className="font-body font-medium"
+                    style={{ fontSize: '0.8125rem', letterSpacing: '0.02em', color: 'var(--color-muted)' }}
+                  >
+                    {typeName} · {unit.floor}-р давхар
+                  </span>
                   <StatusBadge status={unit.status} />
                 </div>
-                <p className="font-display text-xl mb-2 pr-24">{typeMap.get(unit.typeId)?.name}</p>
-                <div className="flex flex-wrap gap-x-4 gap-y-1">
-                  <span className="font-utility text-[11px] text-muted">{unit.floor}-р давхар</span>
-                  <span className="font-utility text-[11px] text-muted">{unit.sizeM2} м²</span>
-                  <span className="font-utility text-[11px] text-muted">
-                    {ORIENTATION_LABELS[unit.orientation] ?? unit.orientation}
-                  </span>
-                  <span
-                    className="font-utility text-[11px]"
-                    style={
-                      unit.status === 'sold'
-                        ? { textDecoration: 'line-through', color: 'var(--color-muted)' }
-                        : { color: 'var(--color-oak)' }
-                    }
-                  >
-                    {formatPrice(unit.price)}
-                  </span>
+
+                {/* Price — dominant */}
+                <p
+                  className="font-display font-light"
+                  style={{
+                    fontSize: 'clamp(1.4rem, 3vw, 1.9rem)',
+                    lineHeight: 1.05,
+                    color: isSold ? 'var(--color-muted)' : 'var(--color-oak)',
+                    textDecoration: isSold ? 'line-through' : 'none',
+                  }}
+                >
+                  {formatPrice(unit.price)}
+                </p>
+
+                {/* Specs row */}
+                <div className="flex flex-wrap gap-x-3 gap-y-1">
+                  {[
+                    `${unit.sizeM2} м²`,
+                    ORIENTATION_LABELS[unit.orientation] ?? unit.orientation,
+                  ].map((spec) => (
+                    <span
+                      key={spec}
+                      className="font-utility"
+                      style={{ fontSize: '11px', color: 'var(--color-muted)', letterSpacing: '0.08em' }}
+                    >
+                      {spec}
+                    </span>
+                  ))}
                 </div>
+
+                {/* Action */}
+                {!isSold && (
+                  <Link
+                    href={`/contact?type=${unit.typeId}`}
+                    className="font-body font-medium self-start"
+                    style={{
+                      fontSize: '0.8125rem',
+                      color: 'var(--color-oak)',
+                      textDecoration: 'none',
+                      marginTop: 'auto',
+                      paddingTop: '0.25rem',
+                    }}
+                    aria-label={`${unit.floor}-р давхарын ${unit.sizeM2}м² орон сууц захиалах`}
+                  >
+                    Үзлэг захиалах{' '}
+                    <span aria-hidden="true">→</span>
+                  </Link>
+                )}
               </div>
-            ))}
-          </div>
-        </>
+            )
+          })}
+        </div>
       )}
     </div>
   )
