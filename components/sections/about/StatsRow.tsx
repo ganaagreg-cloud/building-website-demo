@@ -1,12 +1,13 @@
+import type { StatItem } from '@/types'
 import { StatBig } from '@/components/kit/StatBig'
 
-const STATS = [
-  { value: '12', label: 'Жилийн туршлага', suffix: '+' },
-  { value: '1685', label: 'Амьдарч буй гэр бүл', suffix: '+' },
-  { value: '8', label: 'Дуусгасан төсөл' },
-]
+interface StatsRowProps {
+  stats: StatItem[]
+}
 
-export function StatsRow() {
+export function StatsRow({ stats }: StatsRowProps) {
+  if (stats.length === 0) return null
+
   return (
     <section
       aria-label="Тоон үзүүлэлт"
@@ -16,7 +17,7 @@ export function StatsRow() {
         className="max-w-content mx-auto px-4 lg:px-8 flex flex-wrap gap-16"
         style={{ paddingBlock: 'var(--section-padding)' }}
       >
-        {STATS.map((s) => (
+        {stats.map((s) => (
           <StatBig key={s.label} value={s.value} label={s.label} suffix={s.suffix} theme="dark" />
         ))}
       </div>
