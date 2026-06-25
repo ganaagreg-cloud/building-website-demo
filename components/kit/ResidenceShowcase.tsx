@@ -1,102 +1,161 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import type { UnitType } from '@/types'
-import { IndexNumber } from './IndexNumber'
-import { EditorialHeading } from './EditorialHeading'
-import { StatBig } from './StatBig'
-import { CTAPair } from './CTAPair'
 
 interface ResidenceShowcaseProps {
   unitType: UnitType
-  index: number
-  total: number
   side?: 'left' | 'right'
   theme?: 'light' | 'dark'
   isLast?: boolean
 }
 
 function formatPrice(n: number) {
-  return new Intl.NumberFormat('mn-MN').format(n)
+  return `₮${Math.round(n / 1_000_000)}M`
 }
 
 export function ResidenceShowcase({
   unitType,
-  index,
-  total,
   side = 'left',
   theme = 'light',
   isLast = false,
 }: ResidenceShowcaseProps) {
   const imageSrc = unitType.dollhouseImage ?? unitType.gallery[0] ?? unitType.floorPlanImage
-  const bg = theme === 'dark' ? 'var(--bg-dark)' : 'var(--color-surface)'
-  const borderColor = theme === 'dark' ? 'var(--line-dark)' : 'var(--line)'
-  const bodyColor = theme === 'dark' ? 'rgba(250,246,239,0.55)' : 'var(--color-muted)'
 
-  const imageCol = (
-    <div className="relative w-full md:w-1/2 aspect-[4/3] overflow-hidden" style={{ borderRadius: '2px' }}>
-      <Image
-        src={imageSrc}
-        alt={`${unitType.name} орон сууцны зураг`}
-        fill
-        className="object-cover"
-        sizes="(max-width: 768px) 100vw, 50vw"
-      />
-    </div>
-  )
+  const isLight = theme === 'light'
+  const contentBg    = isLight ? '#FFFFFF'                    : 'var(--bg-dark)'
+  const panelBg      = isLight ? '#F4F4F4'                    : '#111111'
+  const headingColor = isLight ? 'var(--color-text)'          : 'var(--color-on-dark)'
+  const bodyColor    = isLight ? 'var(--color-muted)'         : 'rgba(255,255,255,0.5)'
+  const borderColor  = isLight ? 'rgba(0,0,0,0.07)'          : 'rgba(255,255,255,0.08)'
+  const numColor     = isLight ? 'var(--color-muted)'         : 'rgba(255,255,255,0.3)'
+  const featureColor = isLight ? 'var(--color-text)'          : 'rgba(255,255,255,0.82)'
 
   const contentCol = (
-    <div className="w-full md:w-1/2 flex flex-col justify-center gap-6 px-0 md:px-10">
-      <IndexNumber index={index} total={total} theme={theme} />
-
-      <p className="font-body" style={{ fontSize: '10px', letterSpacing: '0.16em', textTransform: 'uppercase', color: bodyColor }}>
+    <div
+      className="flex flex-col justify-center"
+      style={{
+        flex: '0 0 44%',
+        padding: 'clamp(2.5rem, 5vw, 4.5rem)',
+        backgroundColor: contentBg,
+      }}
+    >
+      {/* Meta label */}
+      <p
+        className="font-utility text-[10px] tracking-[0.14em] uppercase mb-5"
+        style={{ color: bodyColor }}
+      >
         {unitType.rooms > 0 ? `${unitType.rooms} унтлагын өрөө` : 'Студи'} · {unitType.sizeRange[0]}–{unitType.sizeRange[1]} м²
       </p>
 
-      <EditorialHeading
-        parts={[{ text: unitType.name }]}
-        as="h3"
-        theme={theme}
-        style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}
-      />
+      {/* Unit name */}
+      <h2
+        className="font-display font-light mb-4"
+        style={{
+          fontSize: 'clamp(2.4rem, 4.5vw, 3.75rem)',
+          lineHeight: 1.05,
+          letterSpacing: '-0.02em',
+          color: headingColor,
+        }}
+      >
+        {unitType.name}
+      </h2>
 
-      <p className="font-body" style={{ fontSize: '0.95rem', lineHeight: 1.65, color: bodyColor, maxWidth: '380px' }}>
+      {/* Blurb */}
+      <p
+        className="font-body mb-8"
+        style={{ fontSize: '0.9375rem', lineHeight: 1.7, color: bodyColor, maxWidth: '30ch' }}
+      >
         {unitType.blurb}
       </p>
 
-      <div className="flex flex-wrap gap-8">
-        <StatBig value={String(unitType.sizeRange[0])} label="Талбай м²" suffix="+" theme={theme} />
-        {unitType.rooms > 0 && (
-          <StatBig value={String(unitType.rooms)} label="Унтлага" theme={theme} />
-        )}
-        <StatBig value={formatPrice(unitType.priceFrom)} label="₮-аас эхлэн" theme={theme} />
+      {/* Numbered features — like reference */}
+      <div style={{ borderTop: `1px solid ${borderColor}` }}>
+        {unitType.features.map((feat, i) => (
+          <div
+            key={feat}
+            className="flex items-baseline gap-4 py-3"
+            style={{ borderBottom: `1px solid ${borderColor}` }}
+          >
+            <span
+              className="font-utility text-[10px] shrink-0 tabular-nums"
+              style={{ color: numColor }}
+            >
+              0{i + 1}
+            </span>
+            <span className="font-body text-sm" style={{ color: featureColor, lineHeight: 1.4 }}>
+              {feat}
+            </span>
+          </div>
+        ))}
       </div>
 
-      <div className="mt-2">
-        <CTAPair
-          primary="Дэлгэрэнгүй"
-          primaryHref={`/residences/${unitType.id}`}
-          secondary="Үзлэг захиалах"
-          secondaryHref="/contact"
-          theme={theme}
+      {/* Price + links */}
+      <div className="flex items-baseline justify-between flex-wrap gap-4 mt-8">
+        <p
+          className="font-display font-light"
+          style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)', color: 'var(--color-oak)', lineHeight: 1 }}
+        >
+          {formatPrice(unitType.priceFrom)}
+          <span
+            className="font-body font-normal"
+            style={{ fontSize: '0.75rem', color: bodyColor, marginLeft: '0.35rem' }}
+          >
+            -аас
+          </span>
+        </p>
+        <div className="flex gap-5">
+          <Link
+            href={`/residences/${unitType.id}`}
+            className="font-body font-medium text-[0.8125rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
+            style={{ color: 'var(--color-oak)' }}
+          >
+            Дэлгэрэнгүй →
+          </Link>
+          <Link
+            href={`/contact?type=${unitType.id}`}
+            className="font-body font-medium text-[0.8125rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
+            style={{ color: featureColor }}
+          >
+            Үзлэг захиалах
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
+
+  // Gray panel — floor plan floats on colored background
+  const imageCol = (
+    <div
+      className="relative flex items-center justify-center"
+      style={{
+        flex: '0 0 56%',
+        backgroundColor: panelBg,
+        minHeight: 'clamp(300px, 45vw, 600px)',
+        padding: 'clamp(2rem, 5vw, 4rem)',
+      }}
+    >
+      <div className="relative w-full" style={{ maxWidth: '520px', aspectRatio: '4 / 3' }}>
+        <Image
+          src={imageSrc}
+          alt={`${unitType.name} орон сууцны зохион байгуулалт`}
+          fill
+          className="object-contain"
+          sizes="(max-width: 768px) 100vw, 56vw"
         />
       </div>
     </div>
   )
 
+  // Image is first in DOM so on mobile (flex-col) it appears on top.
+  // side='left'  → md:flex-row-reverse  (content left, image right on desktop)
+  // side='right' → md:flex-row           (image left, content right on desktop)
   return (
-    <div style={{ backgroundColor: bg, borderBottom: isLast ? 'none' : `1px solid ${borderColor}` }}>
-      <div className="max-w-content mx-auto px-4 lg:px-8 py-20 flex flex-col md:flex-row gap-12 items-center">
-        {side === 'left' ? (
-          <>
-            {imageCol}
-            {contentCol}
-          </>
-        ) : (
-          <>
-            {contentCol}
-            {imageCol}
-          </>
-        )}
-      </div>
+    <div
+      className={`flex flex-col ${side === 'left' ? 'md:flex-row-reverse' : 'md:flex-row'}`}
+      style={{ borderBottom: isLast ? 'none' : `1px solid ${borderColor}` }}
+    >
+      {imageCol}
+      {contentCol}
     </div>
   )
 }

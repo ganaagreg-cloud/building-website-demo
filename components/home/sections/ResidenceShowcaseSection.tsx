@@ -34,8 +34,6 @@ export async function ResidenceShowcaseSection({
         <ResidenceShowcase
           key={ut.id}
           unitType={ut}
-          index={i + 1}
-          total={unitTypes.length}
           side={i % 2 === 0 ? 'left' : 'right'}
           theme={i % 2 === 0 ? 'light' : 'dark'}
           isLast={i === unitTypes.length - 1}
