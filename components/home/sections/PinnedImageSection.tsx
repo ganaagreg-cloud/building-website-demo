@@ -11,7 +11,9 @@ gsap.registerPlugin(ScrollTrigger)
 export function PinnedImageSection({ config }: { config: PinnedImageSectionConfig }) {
   const sectionRef = useRef<HTMLElement>(null)
   const [active, setActive] = useState(0)
-  const [reduced, setReduced] = useState(false)
+  const [reduced] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
 
   const { image, states } = config
 
@@ -19,8 +21,7 @@ export function PinnedImageSection({ config }: { config: PinnedImageSectionConfi
     const section = sectionRef.current
     if (!section) return
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setReduced(true)
+    if (reduced) {
       return
     }
 
@@ -39,7 +40,7 @@ export function PinnedImageSection({ config }: { config: PinnedImageSectionConfi
     }, section)
 
     return () => ctx.revert()
-  }, [states.length])
+  }, [states.length, reduced])
 
   // Reduced-motion / no-JS-friendly fallback: stack the states, image static.
   if (reduced) {
