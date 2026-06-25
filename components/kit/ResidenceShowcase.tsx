@@ -17,7 +17,7 @@ export function ResidenceShowcase({
   side = 'left',
   isLast = false,
 }: ResidenceShowcaseProps) {
-  const imageSrc = unitType.gallery[0] ?? unitType.floorPlanImage
+  const imageSrc = unitType.dollhouseImage ?? unitType.floorPlanImage
   const borderColor = 'rgba(0,0,0,0.07)'
 
   const contentCol = (
