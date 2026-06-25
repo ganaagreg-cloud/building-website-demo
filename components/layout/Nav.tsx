@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import gsap from 'gsap'
 import { clientConfig } from '@/config/client.config'
 
 const NAV_LINKS = [
@@ -15,15 +16,14 @@ const NAV_LINKS = [
 export function Nav() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [visible, setVisible] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const linksRef = useRef<HTMLDivElement>(null)
 
   const isHome = pathname === '/'
-  // Transparent-over-hero only at the top of the home page.
   const transparent = isHome && !scrolled
 
   useEffect(() => {
-    // On home, flip to solid once the hero is mostly scrolled past.
-    // On inner pages, flip almost immediately.
     const threshold = isHome ? window.innerHeight * 0.7 : 40
     const onScroll = () => setScrolled(window.scrollY > threshold)
     onScroll()
@@ -31,34 +31,57 @@ export function Nav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [isHome])
 
-  const textColor = transparent ? 'rgba(255,255,255,0.92)' : 'var(--text)'
-  const mutedColor = transparent ? 'rgba(255,255,255,0.6)' : 'var(--text-soft)'
+  function openMenu() {
+    setOpen(true)
+    // Double rAF ensures element is painted before transition fires
+    requestAnimationFrame(() => requestAnimationFrame(() => setVisible(true)))
+  }
+
+  function closeMenu() {
+    setVisible(false)
+    setTimeout(() => setOpen(false), 260)
+  }
+
+  // GSAP link stagger on open
+  useEffect(() => {
+    if (!visible || !linksRef.current) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const items = linksRef.current.querySelectorAll<HTMLElement>('.nav-item')
+    gsap.fromTo(
+      items,
+      { y: 28, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out', stagger: 0.07, delay: 0.08 },
+    )
+  }, [visible])
+
+  // Body scroll lock
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [open])
+
+  const textColor = transparent ? 'rgba(255,255,255,0.92)' : 'var(--color-text)'
+  const tickColor = transparent ? 'rgba(255,255,255,0.55)' : 'var(--color-oak)'
+  const btnColor  = transparent ? 'rgba(255,255,255,0.65)' : 'var(--color-muted)'
 
   return (
     <>
       <header
-        className={[
-          'fixed top-0 inset-x-0 z-50 h-16',
-          'flex items-center px-5 lg:px-10 justify-between',
-          'transition-[background-color,box-shadow,border-color] duration-300 ease-out',
-        ].join(' ')}
+        className="fixed top-0 inset-x-0 z-50 h-16 flex items-center px-5 lg:px-10 justify-between transition-[background-color,border-color] duration-300 ease-out"
         style={{
-          backgroundColor: transparent ? 'transparent' : 'rgba(250,250,248,0.82)',
-          backdropFilter: transparent ? 'none' : 'saturate(180%) blur(12px)',
-          WebkitBackdropFilter: transparent ? 'none' : 'saturate(180%) blur(12px)',
-          borderBottom: transparent ? '1px solid transparent' : '1px solid var(--line)',
-          boxShadow: transparent ? 'none' : '0 1px 0 rgba(28,26,23,0.02)',
+          backgroundColor: transparent ? 'transparent' : '#FFFFFF',
+          borderBottom: transparent ? '1px solid transparent' : '1px solid rgba(0,0,0,0.06)',
         }}
       >
-        {/* Wordmark — grotesk, tight, with a sage tick */}
+        {/* Wordmark */}
         <Link
           href="/"
-          className="group flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2"
+          className="group flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)] focus-visible:ring-offset-2"
         >
           <span
             aria-hidden
-            className="inline-block transition-transform duration-300 group-hover:scale-y-150"
-            style={{ width: '3px', height: '16px', backgroundColor: 'var(--accent)' }}
+            className="inline-block transition-all duration-300 group-hover:scale-y-150"
+            style={{ width: '2px', height: '14px', backgroundColor: tickColor }}
           />
           <span
             className="font-body font-bold text-[15px] tracking-tight transition-colors duration-300"
@@ -68,116 +91,172 @@ export function Nav() {
           </span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-7" aria-label="Үндсэн цэс">
-          {NAV_LINKS.map((link) => {
-            const active = pathname === link.href
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="relative font-body text-[13px] font-medium tracking-tight transition-colors duration-300"
-                style={{ color: active ? textColor : mutedColor }}
-              >
-                {link.label}
-                <span
-                  aria-hidden
-                  className="absolute -bottom-1.5 left-0 h-px transition-all duration-300"
-                  style={{
-                    width: active ? '100%' : '0%',
-                    backgroundColor: 'var(--accent)',
-                  }}
-                />
-              </Link>
-            )
-          })}
-          <Link
-            href="/contact"
-            className="ml-1 rounded-full px-5 py-2 font-body text-[13px] font-semibold tracking-tight transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-            style={{
-              backgroundColor: transparent ? 'rgba(255,255,255,0.12)' : 'var(--accent)',
-              color: transparent ? '#fff' : '#fff',
-              border: transparent
-                ? '1px solid rgba(255,255,255,0.35)'
-                : '1px solid transparent',
-              boxShadow: transparent ? 'none' : '0 2px 12px rgba(124,139,111,0.28)',
-            }}
-          >
-            Үзлэг захиалах
-          </Link>
-        </nav>
-
-        {/* Mobile hamburger */}
+        {/* Цэс button */}
         <button
           type="button"
-          className="md:hidden p-2 -mr-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
           aria-label={open ? 'Цэс хаах' : 'Цэс нээх'}
           aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
+          aria-controls="nav-overlay"
+          onClick={open ? closeMenu : openMenu}
+          className="flex items-center gap-2.5 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)] focus-visible:ring-offset-2"
         >
-          <span className="block w-5 h-px mb-1.5 transition-colors" style={{ backgroundColor: textColor }} />
-          <span className="block w-5 h-px mb-1.5 transition-colors" style={{ backgroundColor: textColor }} />
-          <span className="block w-5 h-px transition-colors" style={{ backgroundColor: textColor }} />
+          <span
+            className="font-utility text-[10px] tracking-[0.14em] uppercase transition-colors duration-300"
+            style={{ color: btnColor }}
+          >
+            {open ? 'Хаах' : 'Цэс'}
+          </span>
+          {/* Two-line icon morphs to ✕ */}
+          <span
+            aria-hidden
+            className="relative flex flex-col justify-center"
+            style={{ width: '18px', height: '11px' }}
+          >
+            <span
+              className="absolute block h-px w-full transition-all duration-300"
+              style={{
+                backgroundColor: textColor,
+                top: 0,
+                transform: open ? 'translateY(5.5px) rotate(45deg)' : 'none',
+              }}
+            />
+            <span
+              className="absolute block h-px transition-all duration-300"
+              style={{
+                backgroundColor: textColor,
+                bottom: 0,
+                right: 0,
+                width: open ? '100%' : '70%',
+                transform: open ? 'translateY(-5.5px) rotate(-45deg)' : 'none',
+              }}
+            />
+          </span>
         </button>
       </header>
 
-      {/* Spacer — on inner pages the fixed nav would otherwise overlap content.
-          The home hero intentionally sits under the transparent nav. */}
+      {/* Inner-page spacer */}
       {!isHome && <div aria-hidden className="h-16" />}
 
-      {/* Mobile overlay */}
+      {/* ─── Editorial full-screen overlay ─── */}
       {open && (
         <div
-          className="fixed inset-0 z-[60] flex flex-col items-center justify-center gap-8"
+          id="nav-overlay"
+          className="fixed inset-0 z-[60] flex flex-col"
           style={{
-            backgroundColor: 'var(--color-surface)',
-            animation: 'navOverlayIn 0.2s ease-out both',
+            backgroundColor: '#FFFFFF',
+            opacity: visible ? 1 : 0,
+            transition: 'opacity 0.26s ease-out',
           }}
           role="dialog"
           aria-modal="true"
           aria-label="Навигаци"
         >
-          <button
-            type="button"
-            className="absolute top-5 right-5 p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
-            style={{ color: 'var(--color-muted)', fontSize: '1.125rem' }}
-            aria-label="Хаах"
-            onClick={() => setOpen(false)}
+          {/* Mirror of the top bar */}
+          <div
+            className="flex items-center justify-between h-16 px-5 lg:px-10 shrink-0"
+            style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}
           >
-            ✕
-          </button>
-          {NAV_LINKS.map((link) => {
-            const active = pathname === link.href
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="relative font-body font-semibold text-3xl tracking-tight"
-                style={{ color: 'var(--color-text)' }}
-                onClick={() => setOpen(false)}
-              >
-                {link.label}
-                {active && (
+            <Link
+              href="/"
+              onClick={closeMenu}
+              className="group flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)] focus-visible:ring-offset-2"
+            >
+              <span
+                aria-hidden
+                className="inline-block transition-transform duration-300 group-hover:scale-y-150"
+                style={{ width: '2px', height: '14px', backgroundColor: 'var(--color-oak)' }}
+              />
+              <span className="font-body font-bold text-[15px] tracking-tight" style={{ color: 'var(--color-text)' }}>
+                {clientConfig.buildingName}
+              </span>
+            </Link>
+
+            <button
+              type="button"
+              aria-label="Хаах"
+              onClick={closeMenu}
+              className="flex items-center gap-2.5 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
+            >
+              <span className="font-utility text-[10px] tracking-[0.14em] uppercase" style={{ color: 'var(--color-muted)' }}>
+                Хаах
+              </span>
+              <span aria-hidden className="relative flex flex-col justify-center" style={{ width: '18px', height: '11px' }}>
+                <span className="absolute block h-px w-full" style={{ backgroundColor: 'var(--color-muted)', top: 0, transform: 'translateY(5.5px) rotate(45deg)' }} />
+                <span className="absolute block h-px w-full" style={{ backgroundColor: 'var(--color-muted)', bottom: 0, transform: 'translateY(-5.5px) rotate(-45deg)' }} />
+              </span>
+            </button>
+          </div>
+
+          {/* Links — vertically centred */}
+          <div ref={linksRef} className="flex-1 flex flex-col justify-center px-5 lg:px-10 overflow-y-auto">
+            <nav aria-label="Үндсэн цэс">
+              {NAV_LINKS.map((link, i) => {
+                const active = pathname === link.href
+                return (
+                  <div
+                    key={link.href}
+                    className="nav-item"
+                    style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={closeMenu}
+                      aria-current={active ? 'page' : undefined}
+                      className="group flex items-baseline gap-5 py-5 lg:py-6 focus-visible:outline-none"
+                    >
+                      <span
+                        className="font-utility text-[10px] shrink-0 transition-colors duration-200"
+                        style={{ color: active ? 'var(--color-oak)' : 'var(--color-muted)', minWidth: '1.25rem' }}
+                      >
+                        0{i + 1}
+                      </span>
+                      <span
+                        className="font-display font-light transition-colors duration-200 group-hover:text-[var(--color-oak)]"
+                        style={{
+                          fontSize: 'clamp(2rem, 5.5vw, 3.75rem)',
+                          lineHeight: 1,
+                          letterSpacing: '-0.02em',
+                          color: active ? 'var(--color-oak)' : 'var(--color-text)',
+                        }}
+                      >
+                        {link.label}
+                      </span>
+                    </Link>
+                  </div>
+                )
+              })}
+
+              {/* CTA — text link, not a pill */}
+              <div className="nav-item mt-8 pt-2">
+                <Link
+                  href="/contact"
+                  onClick={closeMenu}
+                  className="inline-flex items-center gap-2 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)] focus-visible:ring-offset-2"
+                >
                   <span
-                    aria-hidden
-                    className="absolute -bottom-1.5 left-0 h-px w-full"
-                    style={{ backgroundColor: 'var(--color-oak)' }}
-                  />
-                )}
-              </Link>
-            )
-          })}
-          <Link
-            href="/contact"
-            className="mt-2 rounded-full px-6 py-2.5 font-body font-semibold text-sm"
-            style={{
-              backgroundColor: 'var(--color-accent)',
-              color: 'var(--color-on-dark)',
-            }}
-            onClick={() => setOpen(false)}
+                    className="font-body font-medium"
+                    style={{ fontSize: '0.9375rem', color: 'var(--color-oak)' }}
+                  >
+                    Үзлэг захиалах
+                  </span>
+                  <span aria-hidden style={{ color: 'var(--color-oak)', fontSize: '0.9rem' }}>→</span>
+                </Link>
+              </div>
+            </nav>
+          </div>
+
+          {/* Footer — tagline + address */}
+          <div
+            className="px-5 lg:px-10 py-5 shrink-0"
+            style={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}
           >
-            Үзлэг захиалах
-          </Link>
+            <p
+              className="font-utility text-[10px] tracking-[0.14em] uppercase"
+              style={{ color: 'var(--color-muted)' }}
+            >
+              {clientConfig.tagline} · {clientConfig.contact.address}
+            </p>
+          </div>
         </div>
       )}
     </>
