@@ -1,30 +1,32 @@
-import { SectionWrapper } from '@/components/layout/SectionWrapper'
+import { Eyebrow } from '@/components/kit/Eyebrow'
+import { EditorialHeading } from '@/components/kit/EditorialHeading'
+import { MapSection } from '@/components/sections/location/MapSection'
 import { Amenities } from '@/components/sections/location/Amenities'
+import { clientConfig } from '@/config/client.config'
 
 export default function LocationPage() {
   return (
     <main>
-      {/* Map placeholder — replace with <iframe> or static map image */}
-      <section
-        aria-label="Байршлын газрын зураг"
-        className="w-full h-[50vh] bg-surface-raised flex items-center justify-center border-b border-[var(--color-border)]"
+      <div
+        className="max-w-content mx-auto px-4 lg:px-8"
+        style={{ paddingTop: 'calc(var(--section-padding) + 64px)', paddingBottom: '3rem' }}
       >
-        <p className="font-utility text-[12px] text-muted tracking-widest uppercase">
-          Газрын зураг — байршил
+        <Eyebrow label="Байршил" className="mb-8" />
+        <EditorialHeading
+          parts={[{ text: 'Хотын ' }, { text: 'зүрхэнд', accent: 'italic' as const }]}
+          as="h1"
+          style={{ fontSize: 'clamp(2.4rem, 6vw, 4rem)', marginBottom: '1.25rem' }}
+        />
+        <p
+          className="font-body mb-2"
+          style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--color-muted)', maxWidth: '460px' }}
+        >
+          {clientConfig.contact.address}
         </p>
-      </section>
+      </div>
 
+      <MapSection />
       <Amenities />
-
-      <SectionWrapper number="02">
-        <div className="max-w-reading mx-auto">
-          <h2 className="font-display font-light text-4xl lg:text-5xl mb-6">Дүүрэг</h2>
-          <p className="font-body text-lg text-muted">
-            Сүхбаатар дүүрэг нь Улаанбаатарын төвийн хамгийн тохиромжтой, дэд бүтэц сайтай
-            байршлуудын нэг юм. Бүх зүйл алхам зайд.
-          </p>
-        </div>
-      </SectionWrapper>
     </main>
   )
 }
