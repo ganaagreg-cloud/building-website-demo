@@ -10,6 +10,8 @@ interface DepthParallaxProps {
   alt: string
   intensity?: number
   sizes?: string
+  /** 'cover' (default) or 'contain' — applied to both the fallback and skeleton images. */
+  objectFit?: 'cover' | 'contain'
   /**
    * When provided, the parent controls scroll progress.
    * The component sets renderRef.current = renderer.render after init.
@@ -30,12 +32,21 @@ export function DepthParallax({
   alt,
   intensity = 0.04,
   sizes = '100vw',
+  objectFit = 'cover',
   renderRef,
   scrollTriggerTarget,
 }: DepthParallaxProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const rendererRef = useRef<DepthParallaxRenderer | null>(null)
   const [webglFailed, setWebglFailed] = useState(false)
+  const [isReady, setIsReady] = useState(false)
+
+  // Holds the ScrollTrigger instance so the cleanup function always sees it,
+  // even if the component unmounts while the Promise is still in-flight.
+  const stRef = useRef<{ kill(): void } | null>(null)
+
+  // Tracks the most recent progress value so ResizeObserver can redraw correctly.
+  const lastProgressRef = useRef(0)
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -47,7 +58,6 @@ export function DepthParallax({
     if (!canvas) return
 
     let cancelled = false
-    let stInstance: { kill(): void } | null = null
 
     import('@/lib/webgl/depthParallax')
       .then(({ createDepthParallaxRenderer }) =>
@@ -64,10 +74,14 @@ export function DepthParallax({
         }
 
         rendererRef.current = renderer
+        setIsReady(true)
 
         if (renderRef) {
           // Parent (DollhouseRevealSection) drives progress via GSAP onUpdate
-          renderRef.current = renderer.render
+          renderRef.current = (progress: number) => {
+            lastProgressRef.current = progress
+            renderer.render(progress)
+          }
         } else if (scrollTriggerTarget?.current) {
           // Self-managed: create a ScrollTrigger for detail-page floor plans
           Promise.all([
@@ -76,12 +90,16 @@ export function DepthParallax({
           ]).then(([gsap, ScrollTrigger]) => {
             if (cancelled) return
             gsap.registerPlugin(ScrollTrigger)
-            stInstance = ScrollTrigger.create({
+            stRef.current = ScrollTrigger.create({
               trigger: scrollTriggerTarget.current,
               start: 'top 85%',
               end: 'bottom 15%',
               scrub: 1.4,
-              onUpdate: (self) => renderer.render(self.progress * 2 - 1),
+              onUpdate: (self) => {
+                const progress = self.progress * 2 - 1
+                lastProgressRef.current = progress
+                renderer.render(progress)
+              },
             })
           })
         }
@@ -92,12 +110,29 @@ export function DepthParallax({
 
     return () => {
       cancelled = true
-      stInstance?.kill()
+      stRef.current?.kill()
+      stRef.current = null
       rendererRef.current?.destroy()
       rendererRef.current = null
       if (renderRef) renderRef.current = null
     }
   }, [colorSrc, depthSrc, intensity, renderRef, scrollTriggerTarget])
+
+  // ResizeObserver: keeps the canvas buffer in sync with its CSS size across
+  // orientation changes, panel resizes, etc.
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const ro = new ResizeObserver(() => {
+      const renderer = rendererRef.current
+      if (!renderer) return
+      renderer.resize()
+      renderer.render(lastProgressRef.current)
+    })
+    ro.observe(canvas)
+    return () => ro.disconnect()
+  }, [])
 
   if (webglFailed) {
     return (
@@ -105,7 +140,7 @@ export function DepthParallax({
         src={colorSrc}
         alt={alt}
         fill
-        className="object-cover"
+        className={`object-${objectFit}`}
         sizes={sizes}
       />
     )
@@ -113,6 +148,18 @@ export function DepthParallax({
 
   return (
     <>
+      {/* Skeleton/fallback shown at reduced opacity while textures load */}
+      {!isReady && (
+        <Image
+          src={colorSrc}
+          alt={alt}
+          fill
+          className={`object-${objectFit}`}
+          sizes={sizes}
+          style={{ opacity: 0.3 }}
+        />
+      )}
+      {/* Canvas is always mounted so WebGL init can proceed */}
       <canvas
         ref={canvasRef}
         aria-hidden
@@ -122,6 +169,8 @@ export function DepthParallax({
           width: '100%',
           height: '100%',
           display: 'block',
+          opacity: isReady ? 1 : 0,
+          transition: 'opacity 0.4s ease',
         }}
       />
       {/* Accessible label for screen readers since the canvas is aria-hidden */}

@@ -81,6 +81,7 @@ export function FloorPlan({ unitType }: { unitType: UnitType }) {
               depthSrc={unitType.floorPlanDepthMap}
               alt={`${unitType.name} орон сууцны давхрын зураг`}
               intensity={0.025}
+              objectFit="contain"
               scrollTriggerTarget={floorPanelRef}
               sizes="(max-width: 768px) 100vw, 56vw"
             />

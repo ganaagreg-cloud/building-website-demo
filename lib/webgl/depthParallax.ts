@@ -1,5 +1,7 @@
 export interface DepthParallaxRenderer {
   render(progress: number): void
+  /** Re-reads canvas CSS dimensions, updates the WebGL viewport, and redraws. */
+  resize(): void
   destroy(): void
 }
 
@@ -101,7 +103,11 @@ export async function createDepthParallaxRenderer(
   const vs = compileShader(gl, gl.VERTEX_SHADER, VERTEX_SRC)
   const fs = compileShader(gl, gl.FRAGMENT_SHADER, FRAGMENT_SRC)
   const program = gl.createProgram()
-  if (!program) return null
+  if (!program) {
+    gl.deleteShader(vs)
+    gl.deleteShader(fs)
+    return null
+  }
   gl.attachShader(program, vs)
   gl.attachShader(program, fs)
   gl.linkProgram(program)
@@ -113,7 +119,12 @@ export async function createDepthParallaxRenderer(
 
   // Full-screen quad covering clip space (rendered as TRIANGLE_STRIP)
   const quadBuf = gl.createBuffer()
-  if (!quadBuf) return null
+  if (!quadBuf) {
+    gl.deleteShader(vs)
+    gl.deleteShader(fs)
+    gl.deleteProgram(program)
+    return null
+  }
   gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf)
   gl.bufferData(
     gl.ARRAY_BUFFER,
@@ -151,6 +162,13 @@ export async function createDepthParallaxRenderer(
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
   }
 
+  function resize(): void {
+    const dpr2 = Math.min(window.devicePixelRatio ?? 1, 2)
+    canvas.width = Math.round(canvas.offsetWidth * dpr2)
+    canvas.height = Math.round(canvas.offsetHeight * dpr2)
+    gl.viewport(0, 0, canvas.width, canvas.height)
+  }
+
   function destroy(): void {
     gl.deleteTexture(colorTex)
     gl.deleteTexture(depthTex)
@@ -160,6 +178,10 @@ export async function createDepthParallaxRenderer(
     gl.deleteProgram(program)
   }
 
+  // Re-read canvas dimensions just before the initial draw — the first browser
+  // paint may have occurred by now (textures loaded async), so offsetWidth/Height
+  // are now reliable.
+  resize()
   render(0) // initial draw at rest position
-  return { render, destroy }
+  return { render, resize, destroy }
 }

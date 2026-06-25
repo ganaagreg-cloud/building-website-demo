@@ -53,6 +53,7 @@ export function DollhouseRevealSection({ config }: { config: DollhouseRevealSect
     tl.to(lightOverlay, { opacity: 0.18, ease: 'power1.inOut', duration: 0.4 }, 0.55)
 
     return () => {
+      depthRenderRef.current = null
       tl.scrollTrigger?.kill()
       tl.kill()
     }
