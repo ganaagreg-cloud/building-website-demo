@@ -50,8 +50,11 @@ def main():
             print(f"  SKIP (not found): {src}")
             continue
         print(f"  Processing {src.name} ...")
-        out = generate_depth_map(pipe, src)
-        print(f"  -> Saved {out.name}")
+        try:
+            out = generate_depth_map(pipe, src)
+            print(f"  -> Saved {out.name}")
+        except Exception as exc:
+            print(f"  ERROR ({src.name}): {exc}")
 
     print("Done.")
 

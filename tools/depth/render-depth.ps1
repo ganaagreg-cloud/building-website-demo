@@ -26,3 +26,4 @@ if ($existing.Count -eq 0) {
 
 $pyScript = Join-Path $scriptDir "generate_depth.py"
 python $pyScript @existing
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
