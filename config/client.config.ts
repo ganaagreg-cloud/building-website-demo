@@ -22,6 +22,7 @@ export const clientConfig: ClientConfig = {
         kind: 'dollhouseReveal',
         enabled: true,
         imageSrc: '/clients/five-star/unit-types/2br-44-dollhouse.png',
+        depthSrc: '/clients/five-star/unit-types/2br-44-dollhouse-depth.png',
       },
       // Unit types + pricing early — seeker self-qualifies before committing to the full journey.
       {
@@ -188,6 +189,7 @@ export const clientConfig: ClientConfig = {
       sizeRange: [44, 56],
       priceFrom: 260_000_000,
       floorPlanImage: '/clients/five-star/unit-types/2br-44-dollhouse.png',
+      floorPlanDepthMap: '/clients/five-star/unit-types/2br-44-dollhouse-depth.png',
       dollhouseImage: '/clients/five-star/unit-types/2br-44-dollhouse.png',
       gallery: [
         '/assets/five-star-gallery-photos/Five-star/2br-44/living.jpg',
@@ -208,6 +210,7 @@ export const clientConfig: ClientConfig = {
       sizeRange: [63, 63],
       priceFrom: 380_000_000,
       floorPlanImage: '/clients/five-star/unit-types/3br-63-dollhouse.png',
+      floorPlanDepthMap: '/clients/five-star/unit-types/3br-63-dollhouse-depth.png',
       dollhouseImage: '/clients/five-star/unit-types/3br-63-dollhouse.png',
       gallery: [
         '/assets/five-star-gallery-photos/Five-star/3br-63/living.jpg',
