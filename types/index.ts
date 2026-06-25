@@ -1,3 +1,14 @@
+export interface HeadingPart {
+  text: string
+  accent?: 'red' | 'oak' | 'italic'
+}
+
+export interface StatItem {
+  value: string
+  label: string
+  suffix?: string
+}
+
 export type UnitStatus = 'available' | 'reserved' | 'sold'
 
 // ─── Home page section configs ───────────────────────────────────────────────
@@ -66,6 +77,33 @@ export interface PinnedImageSectionConfig {
   states: PinnedState[]
 }
 
+export interface StatsBandSectionConfig {
+  kind: 'statsBand'
+  enabled: boolean
+  eyebrow: string
+  headingParts: HeadingPart[]
+  stats: StatItem[]
+}
+
+export interface ResidenceShowcaseSectionConfig {
+  kind: 'residenceShowcase'
+  enabled: boolean
+  eyebrow: string
+  headingParts: HeadingPart[]
+  introBody: string
+}
+
+export interface FinalCtaSectionConfig {
+  kind: 'finalCta'
+  enabled: boolean
+  eyebrow: string
+  headingParts: HeadingPart[]
+  primaryLabel: string
+  primaryHref: string
+  secondaryLabel: string
+  secondaryHref: string
+}
+
 export type HomeSection =
   | HeroSectionConfig
   | ScrollVideoSectionConfig
@@ -74,6 +112,9 @@ export type HomeSection =
   | FeatureStepsSectionConfig
   | InteriorPhotoSectionConfig
   | PinnedImageSectionConfig
+  | StatsBandSectionConfig
+  | ResidenceShowcaseSectionConfig
+  | FinalCtaSectionConfig
 
 export interface HomeConfig {
   sections: HomeSection[]
@@ -96,6 +137,7 @@ export interface UnitType {
   features: string[]
   blurb: string
   tour?: string
+  dollhouseImage?: string
   tourFrames?: string[]
 }
 

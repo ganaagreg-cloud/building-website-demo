@@ -25,6 +25,8 @@ function renderSection(section: HomeSection): React.ReactNode {
       return <InteriorPhotoSection config={section} />
     case 'pinnedImage':
       return <PinnedImageSection config={section} />
+    default:
+      return null
   }
 }
 
