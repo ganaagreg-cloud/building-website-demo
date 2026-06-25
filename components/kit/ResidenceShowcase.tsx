@@ -1,6 +1,9 @@
+'use client'
+import { useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { UnitType } from '@/types'
+import { DepthParallax } from '@/components/common/DepthParallax'
 
 interface ResidenceShowcaseProps {
   unitType: UnitType
@@ -18,7 +21,9 @@ export function ResidenceShowcase({
   isLast = false,
 }: ResidenceShowcaseProps) {
   const imageSrc = unitType.dollhouseImage ?? unitType.floorPlanImage
+  const depthSrc = unitType.dollhouseImage ? unitType.floorPlanDepthMap : undefined
   const borderColor = 'rgba(0,0,0,0.07)'
+  const imageContainerRef = useRef<HTMLDivElement>(null)
 
   const contentCol = (
     <div
@@ -126,31 +131,39 @@ export function ResidenceShowcase({
     </div>
   )
 
-  // Full-bleed interior photo — fills the image side edge-to-edge
   const imageCol = (
     <div
+      ref={imageContainerRef}
       className="relative"
       style={{
         flex: '0 0 55%',
         minHeight: 'clamp(320px, 50vw, 680px)',
+        // Dollhouse PNGs are rendered from the opposite angle — rotate to correct orientation
+        transform: unitType.dollhouseImage ? 'rotate(180deg)' : undefined,
       }}
     >
-      <Image
-        src={imageSrc}
-        alt={`${unitType.name} орон сууцны дотоод`}
-        fill
-        className="object-cover"
-        sizes="(max-width: 768px) 100vw, 55vw"
-      />
+      {depthSrc ? (
+        <DepthParallax
+          colorSrc={imageSrc}
+          depthSrc={depthSrc}
+          alt={`${unitType.name} орон сууцны төлөвлөгөө`}
+          intensity={0.03}
+          sizes="(max-width: 768px) 100vw, 55vw"
+          scrollTriggerTarget={imageContainerRef}
+          objectFit="cover"
+        />
+      ) : (
+        <Image
+          src={imageSrc}
+          alt={`${unitType.name} орон сууцны дотоод`}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 55vw"
+        />
+      )}
     </div>
   )
 
-  // Mobile alternation:
-  //   side='left'  → flex-col            (image top, content below)
-  //   side='right' → flex-col-reverse    (content top, image below)
-  // Desktop:
-  //   side='left'  → md:flex-row-reverse (content left, image right)
-  //   side='right' → md:flex-row         (image left, content right)
   const flexClass =
     side === 'left'
       ? 'flex-col md:flex-row-reverse'
