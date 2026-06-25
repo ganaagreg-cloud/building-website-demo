@@ -1,9 +1,8 @@
 import { notFound } from 'next/navigation'
 import { getUnitTypes, getUnitsByType } from '@/lib/data/adapter'
 import { DetailHeader } from '@/components/sections/detail/DetailHeader'
-import { FloorPlan } from '@/components/sections/detail/FloorPlan'
 import { Gallery } from '@/components/sections/detail/Gallery'
-import { Features } from '@/components/sections/detail/Features'
+import { FloorPlan } from '@/components/sections/detail/FloorPlan'
 import { AvailableUnits } from '@/components/sections/detail/AvailableUnits'
 
 interface Props {
@@ -22,17 +21,11 @@ export default async function ResidenceDetailPage({ params }: Props) {
 
   if (!unitType) notFound()
 
-  const index = unitTypes.findIndex((t) => t.id === typeId) + 1
-
   return (
     <main>
-      <DetailHeader unitType={unitType} index={index} total={unitTypes.length} />
-      <Gallery images={unitType.gallery} altPrefix={unitType.name} />
-      <FloorPlan
-        src={unitType.floorPlanImage}
-        alt={`${unitType.name} орон сууцны давхрын зураг`}
-      />
-      <Features features={unitType.features} />
+      <DetailHeader unitType={unitType} />
+      <Gallery images={unitType.gallery.slice(1)} altPrefix={unitType.name} />
+      <FloorPlan unitType={unitType} />
       <AvailableUnits units={units} typeId={typeId} />
     </main>
   )

@@ -5,7 +5,6 @@ import type { UnitType } from '@/types'
 interface ResidenceShowcaseProps {
   unitType: UnitType
   side?: 'left' | 'right'
-  theme?: 'light' | 'dark'
   isLast?: boolean
 }
 
@@ -16,45 +15,37 @@ function formatPrice(n: number) {
 export function ResidenceShowcase({
   unitType,
   side = 'left',
-  theme = 'light',
   isLast = false,
 }: ResidenceShowcaseProps) {
-  const imageSrc = unitType.dollhouseImage ?? unitType.gallery[0] ?? unitType.floorPlanImage
-
-  const isLight = theme === 'light'
-  const contentBg    = isLight ? '#FFFFFF'                    : 'var(--bg-dark)'
-  const panelBg      = isLight ? '#F4F4F4'                    : '#111111'
-  const headingColor = isLight ? 'var(--color-text)'          : 'var(--color-on-dark)'
-  const bodyColor    = isLight ? 'var(--color-muted)'         : 'rgba(255,255,255,0.5)'
-  const borderColor  = isLight ? 'rgba(0,0,0,0.07)'          : 'rgba(255,255,255,0.08)'
-  const numColor     = isLight ? 'var(--color-muted)'         : 'rgba(255,255,255,0.3)'
-  const featureColor = isLight ? 'var(--color-text)'          : 'rgba(255,255,255,0.82)'
+  const imageSrc = unitType.gallery[0] ?? unitType.floorPlanImage
+  const borderColor = 'rgba(0,0,0,0.07)'
 
   const contentCol = (
     <div
       className="flex flex-col justify-center"
       style={{
-        flex: '0 0 44%',
-        padding: 'clamp(2.5rem, 5vw, 4.5rem)',
-        backgroundColor: contentBg,
+        flex: '0 0 45%',
+        padding: 'clamp(2.8rem, 6vw, 5rem)',
+        backgroundColor: '#FFFFFF',
       }}
     >
       {/* Meta label */}
       <p
         className="font-utility text-[10px] tracking-[0.14em] uppercase mb-5"
-        style={{ color: bodyColor }}
+        style={{ color: 'var(--color-muted)' }}
       >
-        {unitType.rooms > 0 ? `${unitType.rooms} унтлагын өрөө` : 'Студи'} · {unitType.sizeRange[0]}–{unitType.sizeRange[1]} м²
+        {unitType.rooms > 0 ? `${unitType.rooms} унтлагын өрөө` : 'Студи'} ·{' '}
+        {unitType.sizeRange[0]}–{unitType.sizeRange[1]} м²
       </p>
 
-      {/* Unit name */}
+      {/* Unit name — large editorial heading */}
       <h2
-        className="font-display font-light mb-4"
+        className="font-display font-light mb-6"
         style={{
-          fontSize: 'clamp(2.4rem, 4.5vw, 3.75rem)',
-          lineHeight: 1.05,
-          letterSpacing: '-0.02em',
-          color: headingColor,
+          fontSize: 'clamp(3rem, 6vw, 5.5rem)',
+          lineHeight: 1.0,
+          letterSpacing: '-0.025em',
+          color: 'var(--color-text)',
         }}
       >
         {unitType.name}
@@ -62,27 +53,35 @@ export function ResidenceShowcase({
 
       {/* Blurb */}
       <p
-        className="font-body mb-8"
-        style={{ fontSize: '0.9375rem', lineHeight: 1.7, color: bodyColor, maxWidth: '30ch' }}
+        className="font-body mb-10"
+        style={{
+          fontSize: '1rem',
+          lineHeight: 1.75,
+          color: 'var(--color-muted)',
+          maxWidth: '32ch',
+        }}
       >
         {unitType.blurb}
       </p>
 
-      {/* Numbered features — like reference */}
+      {/* Numbered features */}
       <div style={{ borderTop: `1px solid ${borderColor}` }}>
         {unitType.features.map((feat, i) => (
           <div
             key={feat}
-            className="flex items-baseline gap-4 py-3"
+            className="flex items-baseline gap-5 py-3.5"
             style={{ borderBottom: `1px solid ${borderColor}` }}
           >
             <span
               className="font-utility text-[10px] shrink-0 tabular-nums"
-              style={{ color: numColor }}
+              style={{ color: 'rgba(0,0,0,0.28)' }}
             >
               0{i + 1}
             </span>
-            <span className="font-body text-sm" style={{ color: featureColor, lineHeight: 1.4 }}>
+            <span
+              className="font-body text-sm"
+              style={{ color: 'var(--color-text)', lineHeight: 1.5 }}
+            >
               {feat}
             </span>
           </div>
@@ -93,12 +92,16 @@ export function ResidenceShowcase({
       <div className="flex items-baseline justify-between flex-wrap gap-4 mt-8">
         <p
           className="font-display font-light"
-          style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)', color: 'var(--color-oak)', lineHeight: 1 }}
+          style={{
+            fontSize: 'clamp(1.4rem, 2.2vw, 1.9rem)',
+            color: 'var(--color-oak)',
+            lineHeight: 1,
+          }}
         >
           {formatPrice(unitType.priceFrom)}
           <span
             className="font-body font-normal"
-            style={{ fontSize: '0.75rem', color: bodyColor, marginLeft: '0.35rem' }}
+            style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginLeft: '0.35rem' }}
           >
             -аас
           </span>
@@ -114,7 +117,7 @@ export function ResidenceShowcase({
           <Link
             href={`/contact?type=${unitType.id}`}
             className="font-body font-medium text-[0.8125rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
-            style={{ color: featureColor }}
+            style={{ color: 'var(--color-text)' }}
           >
             Үзлэг захиалах
           </Link>
@@ -123,35 +126,39 @@ export function ResidenceShowcase({
     </div>
   )
 
-  // Gray panel — floor plan floats on colored background
+  // Full-bleed interior photo — fills the image side edge-to-edge
   const imageCol = (
     <div
-      className="relative flex items-center justify-center"
+      className="relative"
       style={{
-        flex: '0 0 56%',
-        backgroundColor: panelBg,
-        minHeight: 'clamp(300px, 45vw, 600px)',
-        padding: 'clamp(2rem, 5vw, 4rem)',
+        flex: '0 0 55%',
+        minHeight: 'clamp(320px, 50vw, 680px)',
       }}
     >
-      <div className="relative w-full" style={{ maxWidth: '520px', aspectRatio: '4 / 3' }}>
-        <Image
-          src={imageSrc}
-          alt={`${unitType.name} орон сууцны зохион байгуулалт`}
-          fill
-          className="object-contain"
-          sizes="(max-width: 768px) 100vw, 56vw"
-        />
-      </div>
+      <Image
+        src={imageSrc}
+        alt={`${unitType.name} орон сууцны дотоод`}
+        fill
+        className="object-cover"
+        sizes="(max-width: 768px) 100vw, 55vw"
+      />
     </div>
   )
 
-  // Image is first in DOM so on mobile (flex-col) it appears on top.
-  // side='left'  → md:flex-row-reverse  (content left, image right on desktop)
-  // side='right' → md:flex-row           (image left, content right on desktop)
+  // Mobile alternation:
+  //   side='left'  → flex-col            (image top, content below)
+  //   side='right' → flex-col-reverse    (content top, image below)
+  // Desktop:
+  //   side='left'  → md:flex-row-reverse (content left, image right)
+  //   side='right' → md:flex-row         (image left, content right)
+  const flexClass =
+    side === 'left'
+      ? 'flex-col md:flex-row-reverse'
+      : 'flex-col-reverse md:flex-row'
+
   return (
     <div
-      className={`flex flex-col ${side === 'left' ? 'md:flex-row-reverse' : 'md:flex-row'}`}
+      className={`flex ${flexClass}`}
       style={{ borderBottom: isLast ? 'none' : `1px solid ${borderColor}` }}
     >
       {imageCol}

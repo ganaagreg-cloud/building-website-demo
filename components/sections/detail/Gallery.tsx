@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import { HoverLift } from '@/components/motion/HoverLift'
 
 interface GalleryProps {
   images: string[]
@@ -11,29 +10,33 @@ export function Gallery({ images, altPrefix }: GalleryProps) {
 
   return (
     <section aria-label="Зургийн цомог">
-      <div
-        className="max-w-content mx-auto px-4 lg:px-8"
-        style={{ paddingBlock: '4rem' }}
-      >
-        <div
-          className={`grid gap-4 ${images.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}
-        >
+      {images.length === 1 ? (
+        <div className="relative" style={{ aspectRatio: '16/9' }}>
+          <Image
+            src={images[0]!}
+            alt={`${altPrefix} — дотоод зураг`}
+            fill
+            className="object-cover"
+            sizes="100vw"
+            loading="lazy"
+          />
+        </div>
+      ) : (
+        <div className="grid grid-cols-2" style={{ gap: '2px' }}>
           {images.map((src, i) => (
-            <HoverLift key={src}>
-              <div className="relative aspect-[16/10] overflow-hidden" style={{ borderRadius: '2px' }}>
-                <Image
-                  src={src}
-                  alt={`${altPrefix} — зураг ${i + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  loading={i === 0 ? 'eager' : 'lazy'}
-                />
-              </div>
-            </HoverLift>
+            <div key={src} className="relative" style={{ aspectRatio: '4/3' }}>
+              <Image
+                src={src}
+                alt={`${altPrefix} — зураг ${i + 1}`}
+                fill
+                className="object-cover"
+                sizes="50vw"
+                loading="lazy"
+              />
+            </div>
           ))}
         </div>
-      </div>
+      )}
     </section>
   )
 }

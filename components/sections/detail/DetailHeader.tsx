@@ -1,53 +1,105 @@
+import Image from 'next/image'
+import Link from 'next/link'
 import type { UnitType } from '@/types'
-import { IndexNumber } from '@/components/kit/IndexNumber'
-import { EditorialHeading } from '@/components/kit/EditorialHeading'
-import { StatBig } from '@/components/kit/StatBig'
-import { CTAPair } from '@/components/kit/CTAPair'
-import { Eyebrow } from '@/components/kit/Eyebrow'
-
-interface DetailHeaderProps {
-  unitType: UnitType
-  index: number
-  total: number
-}
 
 function formatPrice(n: number) {
-  return new Intl.NumberFormat('mn-MN').format(n)
+  return `₮${Math.round(n / 1_000_000)}M`
 }
 
-export function DetailHeader({ unitType, index, total }: DetailHeaderProps) {
+export function DetailHeader({ unitType }: { unitType: UnitType }) {
+  const heroSrc = unitType.gallery[0] ?? unitType.floorPlanImage
+
   return (
-    <div
-      className="max-w-content mx-auto px-4 lg:px-8"
-      style={{ paddingTop: 'calc(var(--section-padding) + 64px)', paddingBottom: '3rem' }}
-    >
-      <IndexNumber index={index} total={total} className="mb-6" />
-      <Eyebrow
-        label={unitType.rooms > 0 ? `${unitType.rooms} унтлагын өрөө` : 'Студи'}
-        className="mb-6"
-      />
-      <EditorialHeading
-        parts={[{ text: unitType.name }]}
-        as="h1"
-        style={{ fontSize: 'clamp(2.8rem, 7vw, 5rem)', marginBottom: '1.5rem' }}
-      />
-      <p
-        className="font-body"
-        style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--color-muted)', maxWidth: '460px', marginBottom: '2.5rem' }}
-      >
-        {unitType.blurb}
-      </p>
-      <div className="flex flex-wrap gap-10 mb-10">
-        <StatBig value={`${unitType.sizeRange[0]}–${unitType.sizeRange[1]}`} label="Талбай м²" />
-        {unitType.rooms > 0 && <StatBig value={String(unitType.rooms)} label="Унтлага" />}
-        <StatBig value={formatPrice(unitType.priceFrom)} label="₮-аас эхлэн" />
+    <>
+      {/* Full-bleed hero — interior photo */}
+      <div className="relative" style={{ height: 'clamp(400px, 72vh, 700px)' }}>
+        <Image
+          src={heroSrc}
+          alt={unitType.name}
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.12) 45%, transparent 70%)',
+          }}
+        />
+        {/* Bottom text */}
+        <div className="absolute bottom-0 left-0 right-0 px-5 lg:px-10 pb-10">
+          <p
+            className="font-utility text-[10px] tracking-[0.14em] uppercase mb-3"
+            style={{ color: 'rgba(255,255,255,0.6)' }}
+          >
+            {unitType.rooms > 0 ? `${unitType.rooms} унтлагын өрөө` : 'Студи'} ·{' '}
+            {unitType.sizeRange[0]}–{unitType.sizeRange[1]} м²
+          </p>
+          <h1
+            className="font-display font-light"
+            style={{
+              fontSize: 'clamp(2.8rem, 7vw, 5rem)',
+              lineHeight: 1.02,
+              letterSpacing: '-0.02em',
+              color: '#FFFFFF',
+            }}
+          >
+            {unitType.name}
+          </h1>
+        </div>
       </div>
-      <CTAPair
-        primary="Үзлэг захиалах"
-        primaryHref="/contact"
-        secondary="Боломжтой орон сууц"
-        secondaryHref="#units"
-      />
-    </div>
+
+      {/* Info strip */}
+      <div
+        className="flex flex-wrap items-center justify-between gap-5 px-5 lg:px-10 py-6"
+        style={{ borderBottom: '1px solid rgba(0,0,0,0.08)' }}
+      >
+        <p
+          className="font-display font-light"
+          style={{ fontSize: 'clamp(1.4rem, 2.5vw, 1.75rem)', color: 'var(--color-oak)', lineHeight: 1 }}
+        >
+          {formatPrice(unitType.priceFrom)}
+          <span
+            className="font-body"
+            style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginLeft: '0.35rem' }}
+          >
+            -аас
+          </span>
+        </p>
+        <div className="flex gap-6">
+          <Link
+            href="#units"
+            className="font-body font-medium text-[0.8125rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
+            style={{ color: 'var(--color-text)' }}
+          >
+            Боломжтой орон сууц ↓
+          </Link>
+          <Link
+            href={`/contact?type=${unitType.id}`}
+            className="font-body font-medium text-[0.8125rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
+            style={{ color: 'var(--color-oak)' }}
+          >
+            Үзлэг захиалах →
+          </Link>
+        </div>
+      </div>
+
+      {/* Blurb */}
+      <div className="px-5 lg:px-10 py-10">
+        <p
+          className="font-body"
+          style={{
+            fontSize: '1.0625rem',
+            lineHeight: 1.75,
+            color: 'var(--color-muted)',
+            maxWidth: '540px',
+          }}
+        >
+          {unitType.blurb}
+        </p>
+      </div>
+    </>
   )
 }

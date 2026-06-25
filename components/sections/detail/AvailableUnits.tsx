@@ -50,7 +50,7 @@ export function AvailableUnits({ units, typeId }: { units: Unit[]; typeId: strin
                 {units.map((unit) => (
                   <tr
                     key={unit.id}
-                    style={{ borderBottom: '1px solid rgba(42,39,36,0.06)' }}
+                    style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}
                   >
                     <td className="font-utility py-4 pr-6" style={{ fontSize: '12px' }}>{unit.floor}-р давхар</td>
                     <td className="font-utility py-4 pr-6" style={{ fontSize: '12px' }}>{unit.sizeM2} м²</td>
