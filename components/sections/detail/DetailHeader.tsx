@@ -1,26 +1,53 @@
 import type { UnitType } from '@/types'
+import { IndexNumber } from '@/components/kit/IndexNumber'
+import { EditorialHeading } from '@/components/kit/EditorialHeading'
+import { StatBig } from '@/components/kit/StatBig'
+import { CTAPair } from '@/components/kit/CTAPair'
+import { Eyebrow } from '@/components/kit/Eyebrow'
 
-function formatPrice(n: number) {
-  return new Intl.NumberFormat('mn-MN').format(n) + ' ₮'
+interface DetailHeaderProps {
+  unitType: UnitType
+  index: number
+  total: number
 }
 
-export function DetailHeader({ unitType }: { unitType: UnitType }) {
+function formatPrice(n: number) {
+  return new Intl.NumberFormat('mn-MN').format(n)
+}
+
+export function DetailHeader({ unitType, index, total }: DetailHeaderProps) {
   return (
-    <header className="max-w-content mx-auto px-4 lg:px-8 pt-16 pb-8">
-      <h1
-        className="font-display font-light mb-3"
-        style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', lineHeight: 1.1 }}
+    <div
+      className="max-w-content mx-auto px-4 lg:px-8"
+      style={{ paddingTop: 'calc(var(--section-padding) + 64px)', paddingBottom: '3rem' }}
+    >
+      <IndexNumber index={index} total={total} className="mb-6" />
+      <Eyebrow
+        label={unitType.rooms > 0 ? `${unitType.rooms} унтлагын өрөө` : 'Студи'}
+        className="mb-6"
+      />
+      <EditorialHeading
+        parts={[{ text: unitType.name }]}
+        as="h1"
+        style={{ fontSize: 'clamp(2.8rem, 7vw, 5rem)', marginBottom: '1.5rem' }}
+      />
+      <p
+        className="font-body"
+        style={{ fontSize: '1.05rem', lineHeight: 1.7, color: 'var(--color-muted)', maxWidth: '460px', marginBottom: '2.5rem' }}
       >
-        {unitType.name}
-      </h1>
-      <p className="font-body text-lg text-muted mb-6 max-w-reading">{unitType.blurb}</p>
-      <div className="flex flex-wrap gap-6 font-utility text-[12px] text-oak">
-        <span>
-          {unitType.sizeRange[0]}–{unitType.sizeRange[1]} м²
-        </span>
-        {unitType.rooms > 0 && <span>{unitType.rooms} унтлагын өрөө</span>}
-        <span>{formatPrice(unitType.priceFrom)}-аас эхлэн</span>
+        {unitType.blurb}
+      </p>
+      <div className="flex flex-wrap gap-10 mb-10">
+        <StatBig value={`${unitType.sizeRange[0]}–${unitType.sizeRange[1]}`} label="Талбай м²" />
+        {unitType.rooms > 0 && <StatBig value={String(unitType.rooms)} label="Унтлага" />}
+        <StatBig value={formatPrice(unitType.priceFrom)} label="₮-аас эхлэн" />
       </div>
-    </header>
+      <CTAPair
+        primary="Үзлэг захиалах"
+        primaryHref="/contact"
+        secondary="Боломжтой орон сууц"
+        secondaryHref="#units"
+      />
+    </div>
   )
 }

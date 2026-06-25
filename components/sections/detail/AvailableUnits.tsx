@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { StatusBadge } from '@/components/ui/StatusBadge'
-import { SectionWrapper } from '@/components/layout/SectionWrapper'
 import type { Unit } from '@/types'
 
 function formatPrice(n: number) {
@@ -12,34 +11,48 @@ const ORIENTATION_LABELS: Record<string, string> = {
   south: 'Өмнөд',
   east: 'Зүүн',
   west: 'Баруун',
-  'north-east': 'Хойд-Зүүн',
-  'north-west': 'Хойд-Баруун',
-  'south-east': 'Өмнөд-Зүүн',
-  'south-west': 'Өмнөд-Баруун',
+  'north-east': 'ХЗ',
+  'north-west': 'ХБ',
+  'south-east': 'ӨЗ',
+  'south-west': 'ӨБ',
 }
 
-interface AvailableUnitsProps {
-  units: Unit[]
-  typeId: string
-}
-
-export function AvailableUnits({ units, typeId }: AvailableUnitsProps) {
+export function AvailableUnits({ units, typeId }: { units: Unit[]; typeId: string }) {
+  void typeId
   return (
-    <SectionWrapper number="03">
-      <div className="max-w-content mx-auto">
-        <h2 className="font-display font-light text-3xl lg:text-4xl mb-8">Боломжтой орон сууц</h2>
+    <section id="units" aria-label="Боломжтой орон сууц">
+      <div
+        className="max-w-content mx-auto px-4 lg:px-8"
+        style={{ paddingBlock: 'var(--section-padding)', borderTop: '1px solid var(--color-border)' }}
+      >
+        <h2
+          className="font-display font-light mb-10"
+          style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)' }}
+        >
+          Боломжтой орон сууц
+        </h2>
 
         {units.length === 0 ? (
-          <p className="font-body text-sm text-muted">
-            Энэ төрлийн боломжтой орон сууц байхгүй байна.
+          <p className="font-body" style={{ color: 'var(--color-muted)' }}>
+            Одоогоор боломжтой орон сууц байхгүй байна.
           </p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left" aria-label="Боломжтой орон сууцны жагсаалт">
               <thead>
-                <tr className="border-b border-[var(--color-border)]">
-                  {['Давхар', 'Хэмжээ', 'Чиглэл', 'Үнэ', 'Статус'].map((h) => (
-                    <th key={h} className="font-body text-sm text-muted pb-3 pr-6 font-normal">
+                <tr style={{ borderBottom: '1px solid var(--color-border)' }}>
+                  {['Давхар', 'Хэмжээ', 'Чиглэл', 'Үнэ', 'Статус', ''].map((h) => (
+                    <th
+                      key={h}
+                      className="font-body pb-3 pr-6"
+                      style={{
+                        fontSize: '11px',
+                        letterSpacing: '0.1em',
+                        textTransform: 'uppercase',
+                        color: 'var(--color-muted)',
+                        fontWeight: 'normal',
+                      }}
+                    >
                       {h}
                     </th>
                   ))}
@@ -49,24 +62,31 @@ export function AvailableUnits({ units, typeId }: AvailableUnitsProps) {
                 {units.map((unit) => (
                   <tr
                     key={unit.id}
-                    className="border-b border-[rgba(42,39,36,0.06)] hover:bg-[rgba(42,39,36,0.03)] transition-colors"
+                    style={{ borderBottom: '1px solid rgba(42,39,36,0.06)' }}
                   >
-                    <td className="font-utility text-[12px] py-4 pr-6">{unit.floor}</td>
-                    <td className="font-utility text-[12px] py-4 pr-6">{unit.sizeM2} м²</td>
-                    <td className="font-utility text-[12px] py-4 pr-6">
+                    <td className="font-utility py-4 pr-6" style={{ fontSize: '12px' }}>
+                      {unit.floor}-р давхар
+                    </td>
+                    <td className="font-utility py-4 pr-6" style={{ fontSize: '12px' }}>
+                      {unit.sizeM2} м²
+                    </td>
+                    <td className="font-utility py-4 pr-6" style={{ fontSize: '12px', color: 'var(--color-muted)' }}>
                       {ORIENTATION_LABELS[unit.orientation] ?? unit.orientation}
                     </td>
-                    <td
-                      className={`font-utility text-[12px] py-4 pr-6 ${
-                        unit.status === 'sold'
-                          ? 'line-through text-[var(--color-text-disabled)]'
-                          : 'text-oak'
-                      }`}
-                    >
+                    <td className="font-utility py-4 pr-6" style={{ fontSize: '12px', color: 'var(--color-oak)' }}>
                       {formatPrice(unit.price)}
                     </td>
-                    <td className="py-4">
+                    <td className="py-4 pr-6">
                       <StatusBadge status={unit.status} />
+                    </td>
+                    <td className="py-4">
+                      <Link
+                        href="/contact"
+                        className="font-body"
+                        style={{ fontSize: '12px', color: 'var(--color-muted)', textDecoration: 'none' }}
+                      >
+                        Захиалах →
+                      </Link>
                     </td>
                   </tr>
                 ))}
@@ -74,16 +94,7 @@ export function AvailableUnits({ units, typeId }: AvailableUnitsProps) {
             </table>
           </div>
         )}
-
-        <div className="mt-10">
-          <Link
-            href={`/contact?type=${typeId}`}
-            className="inline-flex items-center justify-center bg-oak text-on-oak rounded-full px-8 py-3 font-body text-sm hover:bg-[var(--color-oak-hover)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oak focus-visible:ring-offset-2"
-          >
-            Үзлэг захиалах
-          </Link>
-        </div>
       </div>
-    </SectionWrapper>
+    </section>
   )
 }

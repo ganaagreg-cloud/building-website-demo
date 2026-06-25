@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { getUnitTypes, getUnitsByType } from '@/lib/data/adapter'
 import { DetailHeader } from '@/components/sections/detail/DetailHeader'
 import { FloorPlan } from '@/components/sections/detail/FloorPlan'
+import { Gallery } from '@/components/sections/detail/Gallery'
 import { Features } from '@/components/sections/detail/Features'
 import { AvailableUnits } from '@/components/sections/detail/AvailableUnits'
 
@@ -16,17 +17,17 @@ export async function generateStaticParams() {
 
 export default async function ResidenceDetailPage({ params }: Props) {
   const { typeId } = await params
-  const [unitTypes, units] = await Promise.all([
-    getUnitTypes(),
-    getUnitsByType(typeId),
-  ])
-
+  const [unitTypes, units] = await Promise.all([getUnitTypes(), getUnitsByType(typeId)])
   const unitType = unitTypes.find((t) => t.id === typeId)
+
   if (!unitType) notFound()
+
+  const index = unitTypes.findIndex((t) => t.id === typeId) + 1
 
   return (
     <main>
-      <DetailHeader unitType={unitType} />
+      <DetailHeader unitType={unitType} index={index} total={unitTypes.length} />
+      <Gallery images={unitType.gallery} altPrefix={unitType.name} />
       <FloorPlan
         src={unitType.floorPlanImage}
         alt={`${unitType.name} орон сууцны давхрын зураг`}
