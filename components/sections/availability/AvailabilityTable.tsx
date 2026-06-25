@@ -62,7 +62,11 @@ export function AvailabilityTable({ units, unitTypes }: Props) {
             <thead>
               <tr className="border-b border-[var(--color-border)]">
                 {['Давхар', 'Төрөл', 'Хэмжээ', 'Чиглэл', 'Үнэ', 'Статус'].map((h) => (
-                  <th key={h} className="font-body text-sm text-muted pb-3 pr-6 font-normal">
+                  <th
+                    key={h}
+                    className="font-utility pb-3 pr-6 font-normal"
+                    style={{ fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--color-muted)' }}
+                  >
                     {h}
                   </th>
                 ))}
@@ -81,11 +85,12 @@ export function AvailabilityTable({ units, unitTypes }: Props) {
                     {ORIENTATION_LABELS[unit.orientation] ?? unit.orientation}
                   </td>
                   <td
-                    className={`font-utility text-[12px] py-4 pr-6 ${
+                    className="font-utility text-[12px] py-4 pr-6"
+                    style={
                       unit.status === 'sold'
-                        ? 'line-through text-[var(--color-text-disabled)]'
-                        : 'text-oak'
-                    }`}
+                        ? { textDecoration: 'line-through', color: 'var(--color-muted)' }
+                        : { color: 'var(--color-oak)' }
+                    }
                   >
                     {formatPrice(unit.price)}
                   </td>
@@ -116,11 +121,12 @@ export function AvailabilityTable({ units, unitTypes }: Props) {
                     {ORIENTATION_LABELS[unit.orientation] ?? unit.orientation}
                   </span>
                   <span
-                    className={`font-utility text-[11px] ${
+                    className="font-utility text-[11px]"
+                    style={
                       unit.status === 'sold'
-                        ? 'line-through text-[var(--color-text-disabled)]'
-                        : 'text-oak'
-                    }`}
+                        ? { textDecoration: 'line-through', color: 'var(--color-muted)' }
+                        : { color: 'var(--color-oak)' }
+                    }
                   >
                     {formatPrice(unit.price)}
                   </span>

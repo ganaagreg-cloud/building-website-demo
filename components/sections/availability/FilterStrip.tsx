@@ -38,7 +38,12 @@ export function FilterStrip({
           />
         ))}
       </div>
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Статусаар шүүх">
+      <div
+        className="flex flex-wrap gap-2"
+        role="group"
+        aria-label="Статусаар шүүх"
+        style={{ borderTop: '1px solid var(--color-border)', paddingTop: '0.75rem' }}
+      >
         {STATUS_FILTERS.map((s) => (
           <FilterPill
             key={s.value}
