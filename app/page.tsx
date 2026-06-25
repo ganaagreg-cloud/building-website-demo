@@ -8,8 +8,11 @@ import { DollhouseRevealSection } from '@/components/home/sections/DollhouseReve
 import { FeatureStepsSection } from '@/components/home/sections/FeatureStepsSection'
 import { InteriorPhotoSection } from '@/components/home/sections/InteriorPhotoSection'
 import { PinnedImageSection } from '@/components/home/sections/PinnedImageSection'
+import { StatsBandSection } from '@/components/home/sections/StatsBandSection'
+import { ResidenceShowcaseSection } from '@/components/home/sections/ResidenceShowcaseSection'
+import { FinalCtaSection } from '@/components/home/sections/FinalCtaSection'
 
-function renderSection(section: HomeSection): React.ReactNode {
+async function renderSection(section: HomeSection): Promise<React.ReactNode> {
   switch (section.kind) {
     case 'hero':
       return <HeroSection config={section} />
@@ -25,22 +28,30 @@ function renderSection(section: HomeSection): React.ReactNode {
       return <InteriorPhotoSection config={section} />
     case 'pinnedImage':
       return <PinnedImageSection config={section} />
+    case 'statsBand':
+      return <StatsBandSection config={section} />
+    case 'residenceShowcase':
+      return <ResidenceShowcaseSection config={section} />
+    case 'finalCta':
+      return <FinalCtaSection config={section} />
     default:
       return null
   }
 }
 
-export default function HomePage() {
+export default async function HomePage() {
   const sections = clientConfig.home?.sections ?? []
 
   return (
     <main>
-      {sections.map((section, i) =>
-        section.enabled ? (
-          <React.Fragment key={`${section.kind}-${i}`}>
-            {renderSection(section)}
-          </React.Fragment>
-        ) : null,
+      {await Promise.all(
+        sections.map(async (section, i) =>
+          section.enabled ? (
+            <React.Fragment key={`${section.kind}-${i}`}>
+              {await renderSection(section)}
+            </React.Fragment>
+          ) : null,
+        ),
       )}
     </main>
   )

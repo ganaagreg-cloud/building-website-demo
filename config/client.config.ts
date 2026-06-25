@@ -94,6 +94,47 @@ export const clientConfig: ClientConfig = {
         image: PLACEHOLDER_IMAGES.interior,
         caption: 'Амьдрал эхлэх орон зай.',
       },
+      {
+        kind: 'statsBand' as const,
+        enabled: true,
+        eyebrow: 'Тоон үзүүлэлт',
+        headingParts: [
+          { text: 'Шилдэг чанар, ' },
+          { text: 'батлагдсан', accent: 'italic' as const },
+          { text: ' үр дүн.' },
+        ],
+        stats: [
+          { value: '12', label: 'Жилийн туршлага', suffix: '+' },
+          { value: '1685', label: 'Амьдарч буй гэр бүл', suffix: '+' },
+          { value: '2026', label: 'Хүлээлгэн өгөх он' },
+        ],
+      },
+      {
+        kind: 'residenceShowcase' as const,
+        enabled: true,
+        eyebrow: 'Орон сууцны төрлүүд',
+        headingParts: [
+          { text: 'Таван өөр зохиомж, ' },
+          { text: 'нэг ижил', accent: 'italic' as const },
+          { text: ' чанар.' },
+        ],
+        introBody:
+          'Студиас гурван өрөө хүртэл — бүр тохиромжтой, хүн бүрт зориулсан орон зай.',
+      },
+      {
+        kind: 'finalCta' as const,
+        enabled: true,
+        eyebrow: 'Үзлэг захиалах',
+        headingParts: [
+          { text: 'Таны гэр ' },
+          { text: 'энд', accent: 'italic' as const },
+          { text: ' эхэлнэ.' },
+        ],
+        primaryLabel: 'Үзлэг захиалах',
+        primaryHref: '/contact',
+        secondaryLabel: 'Орон сууцнууд',
+        secondaryHref: '/residences',
+      },
     ],
   },
   slug: 'demo',
