@@ -18,6 +18,26 @@ export const clientConfig: ClientConfig = {
         enabled: false, // TODO: scroll-video clip pending — see REFERENCE.md §2
         videoSrc: '/assets/demo/tour-clip.mp4',
       },
+      // Building exterior first — answers "what building is this?" immediately after the hero.
+      {
+        kind: 'dollhouseReveal',
+        enabled: true,
+        imageSrc: PLACEHOLDER_IMAGES.dollhouse,
+      },
+      // Unit types + pricing early — seeker self-qualifies before committing to the full journey.
+      {
+        kind: 'residenceShowcase' as const,
+        enabled: true,
+        eyebrow: 'Орон сууцны төрлүүд',
+        headingParts: [
+          { text: 'Таван өөр зохиомж, ' },
+          { text: 'нэг ижил', accent: 'italic' as const },
+          { text: ' чанар.' },
+        ],
+        introBody:
+          'Студиас гурван өрөө хүртэл — бүр тохиромжтой, хүн бүрт зориулсан орон зай.',
+      },
+      // Brand statement lands now they've seen the building and the product.
       {
         kind: 'manifesto',
         enabled: true,
@@ -26,11 +46,6 @@ export const clientConfig: ClientConfig = {
           'Өрөө бүр тань зориулагдсан.',
           'Таны гэр энд эхэлнэ.',
         ],
-      },
-      {
-        kind: 'dollhouseReveal',
-        enabled: true,
-        imageSrc: PLACEHOLDER_IMAGES.dollhouse,
       },
       {
         kind: 'featureSteps',
@@ -108,18 +123,6 @@ export const clientConfig: ClientConfig = {
           { value: '1685', label: 'Амьдарч буй гэр бүл', suffix: '+' },
           { value: '2026', label: 'Хүлээлгэн өгөх он' },
         ],
-      },
-      {
-        kind: 'residenceShowcase' as const,
-        enabled: true,
-        eyebrow: 'Орон сууцны төрлүүд',
-        headingParts: [
-          { text: 'Таван өөр зохиомж, ' },
-          { text: 'нэг ижил', accent: 'italic' as const },
-          { text: ' чанар.' },
-        ],
-        introBody:
-          'Студиас гурван өрөө хүртэл — бүр тохиромжтой, хүн бүрт зориулсан орон зай.',
       },
       {
         kind: 'finalCta' as const,
