@@ -1,4 +1,5 @@
-import { SectionWrapper } from '@/components/layout/SectionWrapper'
+import { Eyebrow } from '@/components/kit/Eyebrow'
+import { EditorialHeading } from '@/components/kit/EditorialHeading'
 import { ContactForm } from '@/components/sections/contact/ContactForm'
 import { getUnitTypes } from '@/lib/data/adapter'
 import { clientConfig } from '@/config/client.config'
@@ -12,40 +13,38 @@ export default async function ContactPage({ searchParams }: Props) {
 
   return (
     <main>
-      <SectionWrapper number="01">
-        <div className="max-w-content mx-auto">
-          <h1
-            className="font-display font-light mb-4"
-            style={{ fontSize: 'clamp(2.75rem, 7vw, 4.5rem)', lineHeight: 1.05 }}
-          >
-            Үзлэг захиалах
-          </h1>
-          <p className="font-body text-lg text-muted mb-10 max-w-reading">
-            Та доорх маягтыг бөглөснөөр бид таны тохиромжтой цагт холбоо барина.
-          </p>
+      <div
+        className="max-w-content mx-auto px-4 lg:px-8"
+        style={{ paddingTop: 'calc(var(--section-padding) + 64px)', paddingBottom: '3rem' }}
+      >
+        <Eyebrow label="Холбоо барих" className="mb-8" />
+        <EditorialHeading
+          parts={[{ text: 'Үзлэг ' }, { text: 'захиалах', accent: 'italic' as const }]}
+          as="h1"
+          style={{ fontSize: 'clamp(2.4rem, 6vw, 4rem)', marginBottom: '0.75rem' }}
+        />
+        <p className="font-body mb-12" style={{ fontSize: '1.05rem', color: 'var(--color-muted)', maxWidth: '440px' }}>
+          Манай баг ажлын цагаар хариу өгөх болно.
+        </p>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            <ContactForm unitTypes={unitTypes} preselectedTypeId={type} />
-
-            <address className="not-italic flex flex-col gap-3 lg:pt-2">
-              <p className="font-display text-xl mb-2">{clientConfig.buildingName}</p>
-              <a
-                href={`tel:${clientConfig.contact.phone}`}
-                className="font-utility text-[12px] text-muted hover:text-[var(--color-text)] transition-colors"
-              >
-                {clientConfig.contact.phone}
-              </a>
-              <a
-                href={`mailto:${clientConfig.contact.email}`}
-                className="font-utility text-[12px] text-muted hover:text-[var(--color-text)] transition-colors"
-              >
-                {clientConfig.contact.email}
-              </a>
-              <p className="font-utility text-[12px] text-muted">{clientConfig.contact.address}</p>
-            </address>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+          <ContactForm unitTypes={unitTypes} preselectedTypeId={type} />
+          <div className="flex flex-col gap-6">
+            <div>
+              <p className="font-utility mb-1" style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)' }}>Утас</p>
+              <p className="font-body" style={{ fontSize: '1.05rem' }}>{clientConfig.contact.phone}</p>
+            </div>
+            <div>
+              <p className="font-utility mb-1" style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)' }}>И-мэйл</p>
+              <p className="font-body" style={{ fontSize: '1.05rem' }}>{clientConfig.contact.email}</p>
+            </div>
+            <div>
+              <p className="font-utility mb-1" style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)' }}>Хаяг</p>
+              <p className="font-body" style={{ fontSize: '1.05rem' }}>{clientConfig.contact.address}</p>
+            </div>
           </div>
         </div>
-      </SectionWrapper>
+      </div>
     </main>
   )
 }

@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { FormInput } from '@/components/ui/FormInput'
-import { Button } from '@/components/ui/Button'
 import type { UnitType } from '@/types'
 
 interface ContactFormProps {
@@ -91,9 +90,28 @@ export function ContactForm({ unitTypes, preselectedTypeId }: ContactFormProps) 
       />
 
       <div className="flex justify-end">
-        <Button variant="pill" type="submit" loading={loading} className="w-full md:w-auto">
-          Илгээх
-        </Button>
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '48px',
+            paddingInline: '28px',
+            borderRadius: '9999px',
+            backgroundColor: loading ? 'rgba(192,87,74,0.5)' : 'var(--color-accent)',
+            color: 'var(--color-on-dark)',
+            fontSize: '0.875rem',
+            fontFamily: 'var(--font-body)',
+            fontWeight: 500,
+            border: 'none',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            transition: 'background-color 150ms',
+          }}
+        >
+          {loading ? 'Илгээж байна...' : 'Илгээх'}
+        </button>
       </div>
     </form>
   )
