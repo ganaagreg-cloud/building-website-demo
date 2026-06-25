@@ -1,8 +1,13 @@
+'use client'
+
+import { useRef } from 'react'
 import Image from 'next/image'
+import { DepthParallax } from '@/components/common/DepthParallax'
 import type { UnitType } from '@/types'
 
 export function FloorPlan({ unitType }: { unitType: UnitType }) {
   const borderColor = 'rgba(0,0,0,0.07)'
+  const floorPanelRef = useRef<HTMLDivElement>(null)
 
   return (
     <div
@@ -52,8 +57,9 @@ export function FloorPlan({ unitType }: { unitType: UnitType }) {
         </div>
       </div>
 
-      {/* Right: floor plan on gray panel */}
+      {/* Right: floor plan (or depth-parallax canvas) on gray panel */}
       <div
+        ref={floorPanelRef}
         className="relative flex items-center justify-center"
         style={{
           flex: '0 0 56%',
@@ -69,14 +75,25 @@ export function FloorPlan({ unitType }: { unitType: UnitType }) {
           Төлөвлөгөө
         </span>
         <div className="relative w-full" style={{ maxWidth: '480px', aspectRatio: '4/3' }}>
-          <Image
-            src={unitType.floorPlanImage}
-            alt={`${unitType.name} орон сууцны давхрын зураг`}
-            fill
-            className="object-contain"
-            sizes="(max-width: 768px) 100vw, 56vw"
-            loading="lazy"
-          />
+          {unitType.floorPlanDepthMap ? (
+            <DepthParallax
+              colorSrc={unitType.floorPlanImage}
+              depthSrc={unitType.floorPlanDepthMap}
+              alt={`${unitType.name} орон сууцны давхрын зураг`}
+              intensity={0.025}
+              scrollTriggerTarget={floorPanelRef}
+              sizes="(max-width: 768px) 100vw, 56vw"
+            />
+          ) : (
+            <Image
+              src={unitType.floorPlanImage}
+              alt={`${unitType.name} орон сууцны давхрын зураг`}
+              fill
+              className="object-contain"
+              sizes="(max-width: 768px) 100vw, 56vw"
+              loading="lazy"
+            />
+          )}
         </div>
       </div>
     </div>
