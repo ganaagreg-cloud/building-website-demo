@@ -9,7 +9,7 @@ export const clientConfig: ClientConfig = {
         enabled: true,
         headline: 'Таны мөрөөдлийн орон сууц',
         sub: 'Доош гүйлгээд төслийг бүрэн мэдрээрэй',
-        imageSrc: '/clients/five-star/Hero.png',
+        imageSrc: '/clients/five-star/Hero.webp',
         isSampleVisualization: false,
       },
       {

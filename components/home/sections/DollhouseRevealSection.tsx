@@ -68,23 +68,25 @@ function ParallaxReveal({ config }: { config: DollhouseRevealSectionConfig }) {
       style={{ height: '100svh', backgroundColor: 'var(--bg-dark)' }}
     >
       <div ref={imageWrapRef} className="absolute inset-0">
-        {config.depthSrc ? (
-          <DepthParallax
-            colorSrc={config.imageSrc}
-            depthSrc={config.depthSrc}
-            alt="Five Star Residence интерьер"
-            intensity={0.05}
-            renderRef={depthRenderRef}
-          />
-        ) : (
-          <Image
-            src={config.imageSrc}
-            alt="Five Star Residence интерьер"
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-        )}
+        <div style={{ position: 'absolute', inset: 0, transform: 'rotate(180deg)' }}>
+          {config.depthSrc ? (
+            <DepthParallax
+              colorSrc={config.imageSrc}
+              depthSrc={config.depthSrc}
+              alt="Five Star Residence интерьер"
+              intensity={0.05}
+              renderRef={depthRenderRef}
+            />
+          ) : (
+            <Image
+              src={config.imageSrc}
+              alt="Five Star Residence интерьер"
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
+          )}
+        </div>
       </div>
       <div
         ref={lightOverlayRef}
