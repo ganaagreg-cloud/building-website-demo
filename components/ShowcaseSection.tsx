@@ -90,7 +90,7 @@ export function ShowcaseSection({ config }: { config: ShowcaseApartment3DConfig 
         <p
           style={{
             margin: '0 0 1rem',
-            fontSize: '10px',
+            fontSize: '11px',
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
             color: '#B8946A',
@@ -152,8 +152,8 @@ export function ShowcaseSection({ config }: { config: ShowcaseApartment3DConfig 
         <p
           style={{
             margin: 0,
-            fontSize: '10px',
-            color: 'rgba(250,246,239,0.3)',
+            fontSize: '11px',
+            color: 'rgba(250,246,239,0.55)',
             letterSpacing: '0.04em',
           }}
         >
@@ -163,7 +163,7 @@ export function ShowcaseSection({ config }: { config: ShowcaseApartment3DConfig 
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              color: 'rgba(250,246,239,0.45)',
+              color: 'rgba(250,246,239,0.75)',
               textDecoration: 'underline',
               textUnderlineOffset: '3px',
             }}

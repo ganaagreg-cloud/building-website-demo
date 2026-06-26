@@ -10,17 +10,43 @@ interface ContactFormProps {
   preselectedTypeId?: string
 }
 
+interface FieldErrors {
+  name?: string
+  phone?: string
+}
+
 export function ContactForm({ unitTypes, preselectedTypeId }: ContactFormProps) {
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
+
+  function validate(data: Record<string, FormDataEntryValue>): FieldErrors {
+    const errors: FieldErrors = {}
+    if (!data['name'] || String(data['name']).trim() === '') {
+      errors.name = 'Нэрээ оруулна уу'
+    }
+    const phone = String(data['phone'] ?? '').trim()
+    if (!phone) {
+      errors.phone = 'Утасны дугаар оруулна уу'
+    } else if (!/^[+\d][\d\s\-()]{6,}$/.test(phone)) {
+      errors.phone = 'Утасны дугаар буруу байна'
+    }
+    return errors
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setLoading(true)
     setError(null)
 
     const data = Object.fromEntries(new FormData(e.currentTarget))
+    const errors = validate(data)
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors)
+      return
+    }
+    setFieldErrors({})
+    setLoading(true)
 
     try {
       const res = await fetch('/api/contact', {
@@ -68,7 +94,7 @@ export function ContactForm({ unitTypes, preselectedTypeId }: ContactFormProps) 
             gap: '0.375rem',
           }}
         >
-          <p className="font-utility" style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)' }}>
+          <p className="font-utility" style={{ fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)' }}>
             Яаралтай бол шууд залгаарай
           </p>
           <a
@@ -101,6 +127,8 @@ export function ContactForm({ unitTypes, preselectedTypeId }: ContactFormProps) 
         type="text"
         required
         autoComplete="name"
+        error={fieldErrors.name}
+        onChange={() => fieldErrors.name && setFieldErrors(prev => ({ ...prev, name: undefined }))}
       />
       <FormInput
         label="Утасны дугаар"
@@ -108,6 +136,8 @@ export function ContactForm({ unitTypes, preselectedTypeId }: ContactFormProps) 
         type="tel"
         required
         autoComplete="tel"
+        error={fieldErrors.phone}
+        onChange={() => fieldErrors.phone && setFieldErrors(prev => ({ ...prev, phone: undefined }))}
       />
       <FormInput
         as="select"

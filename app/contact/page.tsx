@@ -48,7 +48,7 @@ export default async function ContactPage({ searchParams }: Props) {
             <div>
               <p
                 className="font-utility mb-1"
-                style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)' }}
+                style={{ fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)' }}
               >
                 Утас
               </p>
@@ -63,7 +63,7 @@ export default async function ContactPage({ searchParams }: Props) {
             <div>
               <p
                 className="font-utility mb-1"
-                style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)' }}
+                style={{ fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)' }}
               >
                 И-мэйл
               </p>
@@ -78,7 +78,7 @@ export default async function ContactPage({ searchParams }: Props) {
             <div>
               <p
                 className="font-utility mb-1"
-                style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)' }}
+                style={{ fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--color-muted)' }}
               >
                 Хаяг
               </p>

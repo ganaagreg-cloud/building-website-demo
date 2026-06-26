@@ -112,7 +112,7 @@ export function ResidenceShowcase({
       </p>
 
       {/* CTAs — two distinct actions with clear visual hierarchy */}
-      <div className="flex gap-3 mt-5">
+      <div className="flex flex-wrap gap-3 mt-5">
         <Link
           href={`/residences/${unitType.id}`}
           className="font-body font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-oak)]"
@@ -127,7 +127,7 @@ export function ResidenceShowcase({
             fontSize: '0.875rem',
             letterSpacing: '0.01em',
             textDecoration: 'none',
-            borderRadius: '2px',
+            borderRadius: '8px',
             border: '1.5px solid var(--color-oak)',
             whiteSpace: 'nowrap',
             transition: 'background-color 150ms, border-color 150ms',
@@ -157,7 +157,7 @@ export function ResidenceShowcase({
             fontSize: '0.875rem',
             letterSpacing: '0.01em',
             textDecoration: 'none',
-            borderRadius: '2px',
+            borderRadius: '8px',
             border: '1.5px solid rgba(0,0,0,0.2)',
             whiteSpace: 'nowrap',
             transition: 'border-color 150ms, background-color 150ms',
@@ -180,10 +180,11 @@ export function ResidenceShowcase({
   const imageCol = (
     <div
       ref={imageContainerRef}
-      className="relative"
+      className="relative overflow-hidden"
       style={{
         flex: '0 0 55%',
         minHeight: 'clamp(320px, 50vw, 680px)',
+        borderRadius: '16px',
         // Dollhouse PNGs are rendered from the opposite angle — rotate to correct orientation
         transform: unitType.dollhouseImage ? 'rotate(180deg)' : undefined,
       }}
