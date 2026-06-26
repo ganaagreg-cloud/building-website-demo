@@ -89,6 +89,7 @@ export function ManifestoSection({ config }: { config: ManifestoSectionConfig })
                 fontWeight: 500,
                 lineHeight: 1.18,
                 letterSpacing: '-0.02em',
+                opacity: 0,
               }}
             >
               {line}

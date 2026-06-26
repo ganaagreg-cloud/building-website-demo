@@ -17,7 +17,7 @@ export function CTAPair({
   theme = 'light',
   className = '',
 }: CTAPairProps) {
-  const outlineColor = theme === 'dark' ? 'rgba(250,246,239,0.3)' : 'rgba(42,39,36,0.25)'
+  const outlineColor = theme === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(42,39,36,0.25)'
   const outlineText = theme === 'dark' ? 'var(--color-on-dark)' : 'var(--color-text)'
 
   return (

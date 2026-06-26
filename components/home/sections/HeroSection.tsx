@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import gsap from 'gsap'
 import type { HeroSectionConfig } from '@/types'
+import { clientConfig } from '@/config/client.config'
 import { SampleVizCaption } from '@/components/common/SampleVizCaption'
 
 export function HeroSection({ config }: { config: HeroSectionConfig }) {
@@ -63,7 +64,7 @@ export function HeroSection({ config }: { config: HeroSectionConfig }) {
       <div ref={imageRef} className="absolute inset-0" style={{ willChange: 'transform' }}>
         <Image
           src={config.imageSrc}
-          alt="Five Star Residence барилга"
+          alt={`${clientConfig.buildingName} барилга`}
           fill
           priority
           className="object-cover"
@@ -78,7 +79,7 @@ export function HeroSection({ config }: { config: HeroSectionConfig }) {
         className="absolute inset-0"
         style={{
           background:
-            'linear-gradient(to bottom, rgba(42,36,30,0) 0%, rgba(42,36,30,0.28) 40%, rgba(42,36,30,0.94) 100%)',
+            'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.28) 40%, rgba(0,0,0,0.94) 100%)',
         }}
       />
 

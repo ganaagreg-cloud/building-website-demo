@@ -11,6 +11,17 @@ export function DetailHeader({ unitType }: { unitType: UnitType }) {
 
   return (
     <>
+      {/* Breadcrumb */}
+      <div className="px-5 lg:px-10 py-4" style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
+        <Link
+          href="/residences"
+          className="font-body text-[0.8125rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
+          style={{ color: 'var(--color-muted)', display: 'inline-flex', alignItems: 'center', gap: '6px', minHeight: '44px' }}
+        >
+          <span aria-hidden>←</span> Орон сууцнууд
+        </Link>
+      </div>
+
       {/* Full-bleed hero — interior photo */}
       <div className="relative" style={{ height: 'clamp(400px, 72vh, 700px)' }}>
         <Image

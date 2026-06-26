@@ -115,14 +115,14 @@ export function ResidenceShowcase({
           <Link
             href={`/residences/${unitType.id}`}
             className="font-body font-medium text-[0.8125rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
-            style={{ color: 'var(--color-oak)' }}
+            style={{ color: 'var(--color-oak)', display: 'inline-flex', alignItems: 'center', minHeight: '44px' }}
           >
             Дэлгэрэнгүй →
           </Link>
           <Link
             href={`/contact?type=${unitType.id}`}
             className="font-body font-medium text-[0.8125rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
-            style={{ color: 'var(--color-text)' }}
+            style={{ color: 'var(--color-text)', display: 'inline-flex', alignItems: 'center', minHeight: '44px' }}
           >
             Үзлэг захиалах
           </Link>
@@ -157,6 +157,7 @@ export function ResidenceShowcase({
           src={imageSrc}
           alt={`${unitType.name} орон сууцны дотоод`}
           fill
+          loading="lazy"
           className="object-cover"
           sizes="(max-width: 768px) 100vw, 55vw"
         />

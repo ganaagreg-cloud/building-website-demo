@@ -13,6 +13,8 @@
   --color-error: #C0574A;
   --color-accent: #B8946A;
   --color-on-dark: #FFFFFF;
+  --color-bg-dark: #1A1A1A;
+  --color-bg-dark-2: #2A2A2A;
 
   /* Font families */
   --font-display: "Cormorant Garamond", Georgia, serif;
@@ -43,13 +45,15 @@
   --color-text-disabled: rgba(0, 0, 0, 0.35);
   --section-padding: 96px;
 
-  /* REFERENCE.md palette — home cinematic sections (authoritative) */
-  --bg-light:    #FFFFFF;
-  --bg-pure:     #FFFFFF;
-  --text:        #111111;
-  --text-soft:   #737373;
-  --bg-dark:     #1A1A1A;
-  --bg-dark-2:   #2A2A2A;
+  /* REFERENCE.md palette — home cinematic sections (authoritative)
+     Values that duplicate @theme tokens are aliased here so there
+     is one source of truth — update @theme to change both. */
+  --bg-light:    var(--color-surface);
+  --bg-pure:     var(--color-surface);
+  --text:        var(--color-text);
+  --text-soft:   var(--color-muted);
+  --bg-dark:     var(--color-bg-dark);
+  --bg-dark-2:   var(--color-bg-dark-2);
   --accent:      #7C8B6F;
   --accent-warm: #B8A687;
   --line:        #E8E8E8;
