@@ -93,40 +93,86 @@ export function ResidenceShowcase({
         ))}
       </div>
 
-      {/* Price + links */}
-      <div className="flex items-baseline justify-between flex-wrap gap-4 mt-8">
-        <p
-          className="font-display font-light"
+      {/* Price */}
+      <p
+        className="font-display font-light mt-8"
+        style={{
+          fontSize: 'clamp(1.4rem, 2.2vw, 1.9rem)',
+          color: 'var(--color-oak)',
+          lineHeight: 1,
+        }}
+      >
+        {formatPrice(unitType.priceFrom)}
+        <span
+          className="font-body font-normal"
+          style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginLeft: '0.35rem' }}
+        >
+          -аас
+        </span>
+      </p>
+
+      {/* CTAs — two distinct actions with clear visual hierarchy */}
+      <div className="flex gap-3 mt-5">
+        <Link
+          href={`/residences/${unitType.id}`}
+          className="font-body font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-oak)]"
           style={{
-            fontSize: 'clamp(1.4rem, 2.2vw, 1.9rem)',
-            color: 'var(--color-oak)',
-            lineHeight: 1,
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '48px',
+            paddingInline: '22px',
+            backgroundColor: 'var(--color-oak)',
+            color: '#FFFFFF',
+            fontSize: '0.875rem',
+            letterSpacing: '0.01em',
+            textDecoration: 'none',
+            borderRadius: '2px',
+            border: '1.5px solid var(--color-oak)',
+            whiteSpace: 'nowrap',
+            transition: 'background-color 150ms, border-color 150ms',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.backgroundColor = 'var(--color-oak-hover)'
+            e.currentTarget.style.borderColor = 'var(--color-oak-hover)'
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.backgroundColor = 'var(--color-oak)'
+            e.currentTarget.style.borderColor = 'var(--color-oak)'
           }}
         >
-          {formatPrice(unitType.priceFrom)}
-          <span
-            className="font-body font-normal"
-            style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginLeft: '0.35rem' }}
-          >
-            -аас
-          </span>
-        </p>
-        <div className="flex gap-5">
-          <Link
-            href={`/residences/${unitType.id}`}
-            className="font-body font-medium text-[0.8125rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
-            style={{ color: 'var(--color-oak)', display: 'inline-flex', alignItems: 'center', minHeight: '44px' }}
-          >
-            Дэлгэрэнгүй →
-          </Link>
-          <Link
-            href={`/contact?type=${unitType.id}`}
-            className="font-body font-medium text-[0.8125rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
-            style={{ color: 'var(--color-text)', display: 'inline-flex', alignItems: 'center', minHeight: '44px' }}
-          >
-            Үзлэг захиалах
-          </Link>
-        </div>
+          Дэлгэрэнгүй →
+        </Link>
+        <Link
+          href={`/contact?type=${unitType.id}`}
+          className="font-body font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-oak)]"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '48px',
+            paddingInline: '22px',
+            backgroundColor: 'transparent',
+            color: 'var(--color-text)',
+            fontSize: '0.875rem',
+            letterSpacing: '0.01em',
+            textDecoration: 'none',
+            borderRadius: '2px',
+            border: '1.5px solid rgba(0,0,0,0.2)',
+            whiteSpace: 'nowrap',
+            transition: 'border-color 150ms, background-color 150ms',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.borderColor = 'rgba(0,0,0,0.5)'
+            e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.03)'
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.borderColor = 'rgba(0,0,0,0.2)'
+            e.currentTarget.style.backgroundColor = 'transparent'
+          }}
+        >
+          Үзлэг захиалах
+        </Link>
       </div>
     </div>
   )
