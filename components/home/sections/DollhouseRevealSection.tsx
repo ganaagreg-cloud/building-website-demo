@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
@@ -9,11 +10,15 @@ import type { DollhouseRevealSectionConfig } from '@/types'
 
 gsap.registerPlugin(ScrollTrigger)
 
-export function DollhouseRevealSection({ config }: { config: DollhouseRevealSectionConfig }) {
+const Dollhouse3DViewer = dynamic(
+  () => import('./Dollhouse3DViewer').then((m) => ({ default: m.Dollhouse3DViewer })),
+  { ssr: false },
+)
+
+function ParallaxReveal({ config }: { config: DollhouseRevealSectionConfig }) {
   const sectionRef = useRef<HTMLElement>(null)
   const imageWrapRef = useRef<HTMLDivElement>(null)
   const lightOverlayRef = useRef<HTMLDivElement>(null)
-  // Set by DepthParallax once its WebGL renderer is ready; called on every scroll tick.
   const depthRenderRef = useRef<((progress: number) => void) | null>(null)
 
   useEffect(() => {
@@ -40,16 +45,12 @@ export function DollhouseRevealSection({ config }: { config: DollhouseRevealSect
         scrub: 1.6,
         anticipatePin: 1,
         onUpdate: (self) => {
-          // Map ScrollTrigger progress 0→1 to parallax range −1→+1
           depthRenderRef.current?.((self.progress - 0.5) * 2)
         },
       },
     })
 
-    // Phase 1 (0→75%): inset shrinks — image bursts to full-bleed
     tl.to(imageWrap, { clipPath: 'inset(0%)', ease: 'power2.inOut', duration: 0.75 }, 0)
-
-    // Phase 2 (60→100%): light wash fades in — colour-break to the light sections below
     tl.to(lightOverlay, { opacity: 0.18, ease: 'power1.inOut', duration: 0.4 }, 0.55)
 
     return () => {
@@ -66,7 +67,6 @@ export function DollhouseRevealSection({ config }: { config: DollhouseRevealSect
       className="relative w-full overflow-hidden"
       style={{ height: '100svh', backgroundColor: 'var(--bg-dark)' }}
     >
-      {/* Image/canvas — clip-path shrinks from 7% inset to full-bleed on scroll */}
       <div ref={imageWrapRef} className="absolute inset-0">
         {config.depthSrc ? (
           <DepthParallax
@@ -86,8 +86,6 @@ export function DollhouseRevealSection({ config }: { config: DollhouseRevealSect
           />
         )}
       </div>
-
-      {/* Light overlay — fades in at end of scroll for colour-break transition */}
       <div
         ref={lightOverlayRef}
         aria-hidden
@@ -96,4 +94,11 @@ export function DollhouseRevealSection({ config }: { config: DollhouseRevealSect
       />
     </section>
   )
+}
+
+export function DollhouseRevealSection({ config }: { config: DollhouseRevealSectionConfig }) {
+  if (config.modelSrc) {
+    return <Dollhouse3DViewer modelSrc={config.modelSrc} />
+  }
+  return <ParallaxReveal config={config} />
 }

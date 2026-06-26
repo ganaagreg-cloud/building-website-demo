@@ -37,6 +37,12 @@ export const clientConfig: ClientConfig = {
         introBody:
           'Студиас гурван өрөө хүртэл — бүр тохиромжтой, хүн бүрт зориулсан орон зай.',
       },
+      // 3D capability demo — shows developer what an interactive model looks like.
+      {
+        kind: 'showcaseApartment3D' as const,
+        enabled: true,
+        modelSrc: '/Clients/five-star/3d%20sample/the_hallwyl_museum_1st_floor_combined.glb',
+      },
       // Brand statement lands now they've seen the building and the product.
       {
         kind: 'manifesto',

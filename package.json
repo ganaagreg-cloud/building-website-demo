@@ -3,27 +3,33 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3004",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "test": "jest",
     "test:watch": "jest --watch",
-    "render:depth": "powershell -ExecutionPolicy Bypass -File tools/depth/render-depth.ps1"
+    "render:depth": "powershell -ExecutionPolicy Bypass -File tools/depth/render-depth.ps1",
+    "optimize:showcase": "bash scripts/optimize-showcase-model.sh"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
     "gsap": "^3.15.0",
     "lenis": "^1.3.23",
     "next": "16.2.9",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "three": "^0.185.0"
   },
   "devDependencies": {
+    "@gltf-transform/cli": "^4.4.0",
     "@tailwindcss/postcss": "^4",
     "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.185.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "jest": "^30.4.2",

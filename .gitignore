@@ -40,6 +40,15 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# large source assets — download locally, never commit
+/raw-assets/
+/public/Clients/five-star/3d sample/
+
+# dev screenshots
+dollhouse-3d-*.png
+home-initial.png
+showcase-3d-*.png
+
 # MCP config — contains credentials, must not be tracked
 .mcp.json
 

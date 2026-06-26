@@ -41,6 +41,7 @@ export interface DollhouseRevealSectionConfig {
   enabled: boolean
   imageSrc: string
   depthSrc?: string
+  modelSrc?: string
 }
 
 export interface FeatureStep {
@@ -105,11 +106,18 @@ export interface FinalCtaSectionConfig {
   secondaryHref: string
 }
 
+export interface ShowcaseApartment3DConfig {
+  kind: 'showcaseApartment3D'
+  enabled: boolean
+  modelSrc: string
+}
+
 export type HomeSection =
   | HeroSectionConfig
   | ScrollVideoSectionConfig
   | ManifestoSectionConfig
   | DollhouseRevealSectionConfig
+  | ShowcaseApartment3DConfig
   | FeatureStepsSectionConfig
   | InteriorPhotoSectionConfig
   | PinnedImageSectionConfig

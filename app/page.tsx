@@ -11,6 +11,7 @@ import { PinnedImageSection } from '@/components/home/sections/PinnedImageSectio
 import { StatsBandSection } from '@/components/home/sections/StatsBandSection'
 import { ResidenceShowcaseSection } from '@/components/home/sections/ResidenceShowcaseSection'
 import { FinalCtaSection } from '@/components/home/sections/FinalCtaSection'
+import { ShowcaseSection } from '@/components/ShowcaseSection'
 
 async function renderSection(section: HomeSection): Promise<React.ReactNode> {
   switch (section.kind) {
@@ -32,6 +33,8 @@ async function renderSection(section: HomeSection): Promise<React.ReactNode> {
       return <StatsBandSection config={section} />
     case 'residenceShowcase':
       return <ResidenceShowcaseSection config={section} />
+    case 'showcaseApartment3D':
+      return <ShowcaseSection config={section} />
     case 'finalCta':
       return <FinalCtaSection config={section} />
     default:
