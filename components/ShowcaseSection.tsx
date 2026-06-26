@@ -37,13 +37,66 @@ function Placeholder() {
   )
 }
 
+function MobileFallback() {
+  return (
+    <div
+      style={{
+        width: '100%',
+        minHeight: '320px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '1rem',
+        padding: '3rem 2rem',
+        background: 'linear-gradient(160deg, #16140F 0%, #1e1b13 60%, #16140F 100%)',
+        textAlign: 'center',
+      }}
+    >
+      {/* Cube icon */}
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden>
+        <path d="M24 4L44 15V33L24 44L4 33V15L24 4Z" stroke="rgba(184,148,106,0.5)" strokeWidth="1.5" fill="none"/>
+        <path d="M24 4L24 44M4 15L44 15M4 33L44 33" stroke="rgba(184,148,106,0.2)" strokeWidth="1"/>
+      </svg>
+      <p
+        style={{
+          margin: 0,
+          color: 'rgba(250,246,239,0.55)',
+          fontSize: '0.875rem',
+          lineHeight: 1.6,
+          maxWidth: '28ch',
+        }}
+      >
+        Интерактив 3D загварыг компьютераас үзнэ үү
+      </p>
+      <p
+        style={{
+          margin: 0,
+          fontSize: '11px',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: 'rgba(184,148,106,0.5)',
+        }}
+      >
+        Desktop · Laptop
+      </p>
+    </div>
+  )
+}
+
 export function ShowcaseSection({ config }: { config: ShowcaseApartment3DConfig }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [inView, setInView] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(window.matchMedia('(max-width: 767px)').matches)
+  }, [])
 
   // Mount the 3D scene once the section is 200px away from the viewport —
   // early enough to be loaded by the time the user scrolls to it.
   useEffect(() => {
+    if (isMobile) return
     const el = containerRef.current
     if (!el) return
 
@@ -59,7 +112,7 @@ export function ShowcaseSection({ config }: { config: ShowcaseApartment3DConfig 
 
     observer.observe(el)
     return () => observer.disconnect()
-  }, [])
+  }, [isMobile])
 
   // R3F sets touch-action:none on the canvas by default, which captures wheel
   // and one-finger touch. Override to pan-y so vertical scroll passes through
@@ -130,16 +183,21 @@ export function ShowcaseSection({ config }: { config: ShowcaseApartment3DConfig 
         </p>
       </div>
 
-      {/* ── 3D viewer ── */}
+      {/* ── 3D viewer (desktop only — 92MB model unsuitable for mobile) ── */}
       <div
         ref={containerRef}
         style={{
           width: '100%',
-          height: 'clamp(480px, 80vh, 860px)',
+          height: isMobile ? 'auto' : 'clamp(480px, 80vh, 860px)',
           position: 'relative',
         }}
       >
-        {inView ? <ShowcaseScene modelSrc={config.modelSrc} /> : <Placeholder />}
+        {isMobile
+          ? <MobileFallback />
+          : inView
+            ? <ShowcaseScene modelSrc={config.modelSrc} />
+            : <Placeholder />
+        }
       </div>
 
       {/* ── CC BY 4.0 attribution — license obligation, not optional ── */}
