@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { Component, useEffect, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
 import dynamic from 'next/dynamic'
 import type { ShowcaseApartment3DConfig } from '@/types'
 
@@ -8,6 +9,15 @@ const ShowcaseScene = dynamic<{ modelSrc: string }>(
   () => import('./showcase-3d/ShowcaseScene').then((m) => ({ default: m.ShowcaseScene })),
   { ssr: false },
 )
+
+class SceneErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() { return { failed: true } }
+  render() {
+    if (this.state.failed) return <MobileFallback />
+    return this.props.children
+  }
+}
 
 function Placeholder() {
   return (
@@ -195,7 +205,7 @@ export function ShowcaseSection({ config }: { config: ShowcaseApartment3DConfig 
         {isMobile
           ? <MobileFallback />
           : inView
-            ? <ShowcaseScene modelSrc={config.modelSrc} />
+            ? <SceneErrorBoundary><ShowcaseScene modelSrc={config.modelSrc} /></SceneErrorBoundary>
             : <Placeholder />
         }
       </div>
