@@ -18,6 +18,7 @@ export default async function ResidencesPage() {
                 src={ut.gallery[0] ?? ut.floorPlanImage}
                 alt={ut.name}
                 fill
+                priority
                 style={{ objectFit: 'cover', objectPosition: 'center' }}
                 sizes="25vw"
               />

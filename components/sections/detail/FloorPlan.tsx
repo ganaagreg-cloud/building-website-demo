@@ -6,13 +6,12 @@ import { DepthParallax } from '@/components/common/DepthParallax'
 import type { UnitType } from '@/types'
 
 export function FloorPlan({ unitType }: { unitType: UnitType }) {
-  const borderColor = 'rgba(0,0,0,0.07)'
   const floorPanelRef = useRef<HTMLDivElement>(null)
 
   return (
     <div
       className="flex flex-col md:flex-row"
-      style={{ borderTop: `1px solid ${borderColor}`, borderBottom: `1px solid ${borderColor}` }}
+      style={{ borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}
     >
       {/* Left: numbered features */}
       <div
@@ -20,7 +19,7 @@ export function FloorPlan({ unitType }: { unitType: UnitType }) {
         style={{
           flex: '0 0 44%',
           padding: 'clamp(2.5rem, 5vw, 4.5rem)',
-          backgroundColor: '#FFFFFF',
+          backgroundColor: 'var(--color-surface)',
         }}
       >
         <h2
@@ -33,12 +32,12 @@ export function FloorPlan({ unitType }: { unitType: UnitType }) {
         >
           Онцлогууд
         </h2>
-        <div style={{ borderTop: `1px solid ${borderColor}` }}>
+        <div style={{ borderTop: '1px solid var(--color-border)' }}>
           {unitType.features.map((feat, i) => (
             <div
               key={feat}
               className="flex items-baseline gap-4 py-3"
-              style={{ borderBottom: `1px solid ${borderColor}` }}
+              style={{ borderBottom: '1px solid var(--color-border)' }}
             >
               <span
                 className="font-utility text-[10px] shrink-0 tabular-nums"
@@ -63,7 +62,7 @@ export function FloorPlan({ unitType }: { unitType: UnitType }) {
         className="relative flex items-center justify-center"
         style={{
           flex: '0 0 56%',
-          backgroundColor: '#F4F4F4',
+          backgroundColor: 'var(--color-surface-raised)',
           minHeight: 'clamp(280px, 40vw, 520px)',
           padding: 'clamp(2rem, 5vw, 4rem)',
         }}

@@ -79,18 +79,43 @@ export function DetailHeader({ unitType }: { unitType: UnitType }) {
             -аас
           </span>
         </p>
-        <div className="flex gap-6">
+        <div className="flex flex-wrap gap-3">
           <Link
             href="#units"
-            className="font-body font-medium text-[0.8125rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
-            style={{ color: 'var(--color-text)' }}
+            className="font-body font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              minHeight: '44px',
+              paddingInline: '18px',
+              fontSize: '0.875rem',
+              color: 'var(--color-text)',
+              border: '1.5px solid var(--color-border)',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              whiteSpace: 'nowrap',
+              transition: 'border-color 150ms',
+            }}
           >
             Боломжтой орон сууц ↓
           </Link>
           <Link
             href={`/contact?type=${unitType.id}`}
-            className="font-body font-medium text-[0.8125rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
-            style={{ color: 'var(--color-oak)' }}
+            className="font-body font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--color-oak)]"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              minHeight: '44px',
+              paddingInline: '22px',
+              fontSize: '0.875rem',
+              backgroundColor: 'var(--color-oak)',
+              color: '#FFFFFF',
+              borderRadius: '8px',
+              border: '1.5px solid var(--color-oak)',
+              textDecoration: 'none',
+              whiteSpace: 'nowrap',
+              transition: 'background-color 150ms, border-color 150ms',
+            }}
           >
             Үзлэг захиалах →
           </Link>

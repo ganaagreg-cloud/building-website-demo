@@ -50,7 +50,7 @@ export function AvailableUnits({ units, typeId }: { units: Unit[]; typeId: strin
                 {units.map((unit) => (
                   <tr
                     key={unit.id}
-                    style={{ borderBottom: '1px solid rgba(0,0,0,0.06)' }}
+                    style={{ borderBottom: '1px solid var(--color-border)' }}
                   >
                     <td className="font-utility py-4 pr-6" style={{ fontSize: '12px' }}>{unit.floor}-р давхар</td>
                     <td className="font-utility py-4 pr-6" style={{ fontSize: '12px' }}>{unit.sizeM2} м²</td>
@@ -62,14 +62,28 @@ export function AvailableUnits({ units, typeId }: { units: Unit[]; typeId: strin
                     </td>
                     <td className="py-4 pr-6"><StatusBadge status={unit.status} /></td>
                     <td className="py-4">
-                      <Link
-                        href={`/contact?type=${typeId}`}
-                        aria-label={`${unit.floor}-р давхарын ${unit.sizeM2}м² орон сууц захиалах`}
-                        className="font-body"
-                        style={{ fontSize: '12px', color: 'var(--color-muted)', textDecoration: 'none' }}
-                      >
-                        Захиалах <span aria-hidden="true">→</span>
-                      </Link>
+                      {unit.status === 'available' && (
+                        <Link
+                          href={`/contact?type=${typeId}`}
+                          aria-label={`${unit.floor}-р давхарын ${unit.sizeM2}м² орон сууц захиалах`}
+                          className="font-body font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-oak)]"
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            minHeight: '44px',
+                            paddingInline: '14px',
+                            fontSize: '0.8125rem',
+                            color: 'var(--color-oak)',
+                            textDecoration: 'none',
+                            border: '1px solid var(--color-border)',
+                            borderRadius: '6px',
+                            whiteSpace: 'nowrap',
+                            transition: 'border-color 150ms, background-color 150ms',
+                          }}
+                        >
+                          Захиалах <span aria-hidden="true" style={{ marginLeft: '4px' }}>→</span>
+                        </Link>
+                      )}
                     </td>
                   </tr>
                 ))}

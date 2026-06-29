@@ -4,6 +4,8 @@ import { DetailHeader } from '@/components/sections/detail/DetailHeader'
 import { Gallery } from '@/components/sections/detail/Gallery'
 import { FloorPlan } from '@/components/sections/detail/FloorPlan'
 import { AvailableUnits } from '@/components/sections/detail/AvailableUnits'
+import { UnitTypeSwitcher } from '@/components/sections/detail/UnitTypeSwitcher'
+import { ClosingCta } from '@/components/sections/detail/ClosingCta'
 
 interface Props {
   params: Promise<{ typeId: string }>
@@ -27,6 +29,8 @@ export default async function ResidenceDetailPage({ params }: Props) {
       <Gallery images={unitType.gallery.slice(1)} altPrefix={unitType.name} />
       <FloorPlan unitType={unitType} />
       <AvailableUnits units={units} typeId={typeId} />
+      <UnitTypeSwitcher unitTypes={unitTypes} activeTypeId={typeId} />
+      <ClosingCta unitType={unitType} />
     </main>
   )
 }
